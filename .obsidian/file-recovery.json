@@ -1,0 +1,21 @@
+{
+  "userIgnoreFilters": [
+    "99-Archive/",
+    "node_modules/",
+    ".git/"
+  ],
+  "newFileIgnoreRules": [],
+  "attachmentFilter": [
+    "png",
+    "jpg",
+    "jpeg",
+    "gif",
+    "svg",
+    "pdf",
+    "mp4",
+    "webm",
+    "mp3",
+    "wav"
+  ],
+  "promptDelete": false
+}

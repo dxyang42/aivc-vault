@@ -1,0 +1,10 @@
+{
+  "trashOption": "local",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "06-Daily",
+  "attachmentFolderPath": "05-Resources/attachments",
+  "promptDelete": false,
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "shortest",
+  "useMarkdownLinks": true
+}
