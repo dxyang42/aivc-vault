@@ -1,0 +1,84 @@
+---
+tags: [method, foundation-model, single-cell, perturbation, pretraining, arc-institute]
+year: 2025
+institution: "Arc Institute"
+authors: "Arc Institute Team"
+architecture: "Transformer-based Foundation Model"
+paper: ""
+code: ""
+status: "待补充"
+date: 2026-03-29
+---
+
+# Tahoe-x1
+
+## 基本信息
+
+- **全称**: Tahoe-x1 Foundation Model for Single-Cell Perturbation
+- **发表时间**: 预计2025年
+- **机构**: Arc Institute
+- **作者**: Arc Institute Team
+
+## 核心技术
+
+Tahoe-x1 是 Arc Institute 开发的 1亿扰动预训练模型，作为虚拟细胞领域的重要基础模型：
+
+1. **大规模预训练**: 在 1亿级扰动数据上进行预训练
+2. **基础模型架构**: 基于 Transformer 的架构设计
+3. **多扰动类型支持**: 支持基因、药物等多种扰动类型
+
+## 输入/输出
+
+- **输入**:
+  - 单细胞基因表达数据
+  - 扰动条件
+- **输出**:
+  - 预测的扰动后细胞状态
+
+## 网络结构
+
+- **架构类型**: Transformer-based Foundation Model
+- **规模**: 1亿扰动预训练
+
+## 训练数据
+
+- **Tahoe-100M**: 1亿扰动数据集
+- 大规模单细胞扰动数据
+
+## 性能指标
+
+根据 SCALE 论文中的对比：
+- 作为 STATE 的对比基线出现
+- PDCorr 和 DE Overlap 指标被 SCALE 超越（SCALE 提升 10-12%）
+
+## 功能特点
+
+1. **大规模预训练**: 1亿级扰动数据预训练
+2. **基础模型**: 可作为下游任务的预训练基础
+3. **多扰动支持**: 支持多种扰动类型
+
+## 应用场景
+
+- 虚拟细胞实验
+- 扰动效应预测
+- 药物筛选
+- 基因功能研究
+
+## 开源资源
+
+- **论文**: 待查找
+- **代码**: 待查找
+- **数据集**: Tahoe-100M
+
+## 备注
+
+Tahoe-x1 在 SCALE 论文中被作为对比基线提及，但详细的论文和代码尚未在 arXiv 或公开渠道找到。可能的情况：
+1. 论文正在准备中，尚未发表
+2. 作为内部模型，未公开发布
+3. 可能以不同的名称发表
+
+需要进一步搜索 Arc Institute 的官方网站或相关发布渠道获取更多信息。
+
+## 相关论文
+
+- Chen, S., et al. (2026). SCALE: Scalable Conditional Atlas-Level Endpoint transport for virtual cell perturbation prediction. *arXiv:2603.17380*. (Tahoe-x1 作为对比基线出现)
