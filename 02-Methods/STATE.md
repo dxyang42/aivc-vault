@@ -38,6 +38,50 @@ STATE采用**双模块架构**：
    - 通过预训练学习细胞嵌入
    - 提升预测准确性
 
+### 数学公式
+
+#### Transformer 自注意力机制
+
+STATE Transition模块基于Transformer的自注意力机制处理细胞集合：
+
+$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V$$
+
+其中：
+- $Q, K, V \in \mathbb{R}^{n \times d_k}$ 分别为查询、键、值矩阵
+- $n = 256$ 为细胞集合大小
+- $d_k$ 为注意力头维度
+- $M$ 为可选的掩码矩阵（用于处理变长集合）
+
+#### 多头注意力
+
+$$\text{MultiHead}(X) = \text{Concat}(\text{head}_1, ..., \text{head}_h)W^O$$
+
+其中每个头：
+$$\text{head}_i = \text{Attention}(XW_i^Q, XW_i^K, XW_i^V)$$
+
+#### 前馈网络
+
+$$\text{FFN}(x) = \text{ReLU}(xW_1 + b_1)W_2 + b_2$$
+
+#### 损失函数
+
+STATE采用多任务损失函数：
+
+$$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{transition}} + \lambda_{\text{embed}} \mathcal{L}_{\text{embedding}} + \lambda_{\text{reg}} \mathcal{L}_{\text{regularization}}$$
+
+**Transition损失**（预测细胞状态转换）：
+$$\mathcal{L}_{\text{transition}} = \mathbb{E}_{(x_0, x_1)} \left[ \|x_1 - \hat{x}_1\|^2 \right]$$
+
+其中 $x_0$ 为对照细胞状态，$x_1$ 为扰动后状态，$\hat{x}_1 = \text{ST}(x_0, c)$ 为预测状态，$c$ 为扰动条件编码。
+
+**Embedding损失**（细胞嵌入学习）：
+$$\mathcal{L}_{\text{embedding}} = \mathbb{E}_{x} \left[ \|x - \text{Decoder}(\text{SE}(x))\|^2 \right]$$
+
+**对比学习损失**（可选）：
+$$\mathcal{L}_{\text{contrastive}} = -\log \frac{\exp(\text{sim}(z_i, z_j)/\tau)}{\sum_{k} \exp(\text{sim}(z_i, z_k)/\tau)}$$
+
+其中 $\text{sim}(\cdot, \cdot)$ 为余弦相似度，$\tau$ 为温度参数。
+
 ### 技术特点
 - 基于细胞集合的自注意力机制
 - 支持单细胞分辨率转录组预测

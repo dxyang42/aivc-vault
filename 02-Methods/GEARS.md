@@ -44,6 +44,87 @@ GEARS结合**深度学习**与**基因-基因关系知识图谱**：
 - 预测多基因扰动的**非加性效应**
 - 使用嵌入表示、多维组件
 
+## 数学公式
+
+### 图神经网络消息传递
+
+GEARS使用图神经网络(GNN)在基因关系图上进行消息传递：
+
+#### 基因关系图
+
+定义基因关系图 $\mathcal{G} = (\mathcal{V}, \mathcal{E})$：
+- $\mathcal{V}$: 基因节点集合，$|\mathcal{V}| = N_{\text{genes}}$
+- $\mathcal{E}$: 边集合，来自STRING数据库、共表达网络等
+
+#### 消息传递机制
+
+对于第 $l$ 层GNN，节点 $i$ 的更新公式：
+
+$$h_i^{(l)} = \text{UPDATE}^{(l)}\left(h_i^{(l-1)}, \text{AGGREGATE}^{(l)}\left(\{h_j^{(l-1)} : j \in \mathcal{N}(i)\}\right)\right)$$
+
+其中：
+- $h_i^{(l)} \in \mathbb{R}^{d_l}$ 为节点 $i$ 在第 $l$ 层的表示
+- $\mathcal{N}(i)$ 为节点 $i$ 的邻居集合
+- $\text{AGGREGATE}$ 为聚合函数
+- $\text{UPDATE}$ 为更新函数
+
+#### 具体实现 (Graph Attention Network)
+
+GEARS采用图注意力网络(GAT)进行消息传递：
+
+**注意力系数计算**：
+$$e_{ij} = \text{LeakyReLU}\left(a^T [Wh_i \| Wh_j]\right)$$
+
+$$\alpha_{ij} = \frac{\exp(e_{ij})}{\sum_{k \in \mathcal{N}(i)} \exp(e_{ik})}$$
+
+其中：
+- $W \in \mathbb{R}^{d' \times d}$ 为可学习的线性变换
+- $a \in \mathbb{R}^{2d'}$ 为注意力参数向量
+- $\|$ 表示向量拼接
+
+**消息聚合**：
+$$h_i' = \sigma\left(\sum_{j \in \mathcal{N}(i)} \alpha_{ij} Wh_j\right)$$
+
+**多头注意力**：
+$$h_i' = \|_{k=1}^{K} \sigma\left(\sum_{j \in \mathcal{N}(i)} \alpha_{ij}^{(k)} W^{(k)} h_j\right)$$
+
+### 扰动嵌入
+
+GEARS为每个扰动(基因)学习嵌入向量：
+
+$$e_{\text{pert}}^{(i)} = \text{Embedding}(\text{gene}_i) \in \mathbb{R}^d$$
+
+对于多基因组合扰动：
+$$e_{\text{combo}} = f_{\text{combine}}(e_{\text{pert}}^{(1)}, e_{\text{pert}}^{(2)}, ..., e_{\text{pert}}^{(k)})$$
+
+其中 $f_{\text{combine}}$ 可以是：
+- 求和: $e_{\text{combo}} = \sum_i e_{\text{pert}}^{(i)}$ (加性假设)
+- 神经网络: $e_{\text{combo}} = \text{MLP}([e_{\text{pert}}^{(1)}; ...; e_{\text{pert}}^{(k)}])$ (非加性建模)
+
+### 非加性效应建模
+
+GEARS的核心创新是预测组合扰动的非加性效应：
+
+$$\hat{x}_{\text{combo}} = x_{\text{control}} + \underbrace{\sum_i \Delta x_i}_{\text{加性效应}} + \underbrace{\Delta x_{\text{interaction}}}_{\text{非加性效应}}$$
+
+其中交互项通过GNN学习：
+$$\Delta x_{\text{interaction}} = \text{GNN}_{\text{interaction}}(e_{\text{combo}}, \mathcal{G})$$
+
+### 损失函数
+
+$$\mathcal{L} = \|x_{\text{true}} - \hat{x}\|^2 + \lambda_{\text{reg}} \|W\|^2$$
+
+对于组合扰动，增加交互损失：
+$$\mathcal{L}_{\text{interaction}} = \|\Delta x_{\text{interaction}} - (x_{\text{combo}} - x_{\text{control}} - \sum_i \Delta x_i)\|^2$$
+
+### 不确定性量化
+
+GEARS使用贝叶斯神经网络或集成方法输出预测不确定性：
+
+$$\sigma^2_{\text{pred}} = \text{Var}(\{\hat{x}^{(k)}\}_{k=1}^{M})$$
+
+其中 $M$ 为蒙特卡洛采样次数或集成模型数量。
+
 ## 核心能力
 
 | 能力 | 描述 |

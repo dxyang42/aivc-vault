@@ -51,6 +51,118 @@ scVI基于**层次贝叶斯模型**和**变分推断**的深度学习框架：
    - 内置批次校正，无需预处理
    - 保留生物学变异，去除技术噪声
 
+## 数学公式
+
+### 生成模型
+
+scVI假设以下数据生成过程：
+
+1. **潜在状态采样**：
+$$z_n \sim \mathcal{N}(0, I_d)$$
+
+2. **文库大小采样**：
+$$l_n \sim \text{LogNormal}(l_\mu, l_\sigma^2)$$
+
+3. **基因表达率**：
+$$\rho_n = f_w(z_n, s_n)$$
+
+其中 $s_n$ 为批次/条件编码，$f_w$ 为神经网络解码器。
+
+4. **观测计数（ZINB分布）**：
+$$x_{nj} | z_n, l_n \sim \text{ZINB}(l_n \cdot \rho_{nj}, \theta_j, \pi_j)$$
+
+### ZINB概率密度函数
+
+零膨胀负二项分布的概率质量函数：
+
+$$P(X = k) = \pi \cdot \mathbb{1}_{k=0} + (1 - \pi) \cdot \text{NB}(k; \mu, \theta)$$
+
+其中负二项分布部分：
+$$\text{NB}(k; \mu, \theta) = \frac{\Gamma(k + \theta)}{\Gamma(\theta)k!} \left(\frac{\theta}{\theta + \mu}\right)^\theta \left(\frac{\mu}{\theta + \mu}\right)^k$$
+
+参数说明：
+- $\mu = l_n \cdot \rho_{nj}$：均值参数
+- $\theta_j$：离散度参数（基因特异性）
+- $\pi_j$：零膨胀概率（基因特异性）
+
+### 变分推断与ELBO
+
+scVI通过最大化证据下界(ELBO)进行训练：
+
+$$\mathcal{L}_{\text{ELBO}} = \mathbb{E}_{q_\phi(z, l | x)}[\log p_\theta(x | z, l)] - D_{\text{KL}}(q_\phi(z, l | x) \| p(z, l))$$
+
+#### 重构项（对数似然）
+
+$$\log p_\theta(x | z, l) = \sum_{j=1}^{J} \log P(x_j | z, l)$$
+
+对于ZINB：
+$$\log P(x_j | z, l) = \begin{cases}
+\log(\pi_j + (1-\pi_j) \cdot \text{NB}(0; \mu_j, \theta_j)) & \text{if } x_j = 0 \\
+\log(1-\pi_j) + \log \text{NB}(x_j; \mu_j, \theta_j) & \text{if } x_j > 0
+\end{cases}$$
+
+#### KL散度项
+
+$$D_{\text{KL}}(q_\phi(z, l | x) \| p(z, l)) = D_{\text{KL}}(q_\phi(z | x) \| p(z)) + D_{\text{KL}}(q_\phi(l | x) \| p(l))$$
+
+对于高斯先验：
+$$D_{\text{KL}}(q_\phi(z | x) \| p(z)) = \frac{1}{2} \sum_{d=1}^{D} \left(\mu_{z,d}^2 + \sigma_{z,d}^2 - 1 - \log \sigma_{z,d}^2\right)$$
+
+### 重参数化技巧
+
+为了通过随机节点进行反向传播，scVI使用重参数化技巧：
+
+#### 潜在变量 $z$ 的重参数化
+
+$$z = \mu_z + \sigma_z \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)$$
+
+其中：
+- $\mu_z = \text{Encoder}_\mu(x)$
+- $\sigma_z = \exp\left(\frac{1}{2} \text{Encoder}_{\log \sigma^2}(x)\right)$
+- $\odot$ 表示逐元素乘法
+
+#### 文库大小 $l$ 的重参数化
+
+$$l = \exp(\mu_l + \sigma_l \cdot \epsilon), \quad \epsilon \sim \mathcal{N}(0, 1)$$
+
+或使用Softplus变换确保正值。
+
+### 编码器网络
+
+变分后验 $q_\phi(z, l | x)$ 由神经网络参数化：
+
+$$q_\phi(z | x) = \mathcal{N}(z; \mu_\phi(x), \text{diag}(\sigma_\phi^2(x)))$$
+
+$$q_\phi(l | x) = \text{LogNormal}(l; \mu_l(x), \sigma_l^2(x))$$
+
+编码器结构：
+```
+x (n_genes)
+  ↓
+FC(n_genes → 128) + BatchNorm + ReLU
+  ↓
+FC(128 → 64) + BatchNorm + ReLU
+  ↓
+├─→ FC(64 → d) → μ_z
+└─→ FC(64 → d) → log σ²_z
+```
+
+### 解码器网络
+
+$$\rho = \text{Softmax}(\text{Decoder}(z))$$
+
+$$\pi = \sigma(\text{ZeroInflationHead}(z))$$
+
+$$\log \theta = \text{DispersionHead}(z)$$
+
+### 批次效应建模
+
+scVI将批次信息 $s$ 作为条件输入解码器：
+
+$$\rho_n = f_w(z_n, s_n) = \text{Softmax}(W_{\text{out}} \cdot \text{NN}([z_n; \text{Embed}(s_n)]) + b_{s_n})$$
+
+其中 $b_{s_n}$ 为批次特异性偏置。
+
 ## 核心能力
 
 | 能力 | 描述 |
