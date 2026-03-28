@@ -1,3 +1,9 @@
+---
+tags: [report, v6, review, audit]
+date: 2026-03-29
+version: V6
+---
+
 # AIVC Perturbation 方法文档批判报告
 
 > 审查日期: 2026-03-29

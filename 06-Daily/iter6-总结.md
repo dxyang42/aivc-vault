@@ -1,3 +1,9 @@
+---
+tags: [report, v6, summary, iteration]
+date: 2026-03-29
+version: V6
+---
+
 # AIVC Perturbation 第6轮迭代总结
 
 > 迭代日期: 2026-03-29
