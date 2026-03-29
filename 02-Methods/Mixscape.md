@@ -1,7 +1,6 @@
 ---
 tags: [method, crispr-screen, perturb-seq, seurat, 2021, quality-control]
 year: 2021
-version: "1.0"
 institution: "NY Genome Center (Satija Lab)"
 authors: "Efthymia Papalexi, et al."
 architecture: "Statistical Framework (LRT)"

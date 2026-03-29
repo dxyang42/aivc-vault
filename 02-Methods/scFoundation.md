@@ -1,7 +1,6 @@
 ---
 tags: [method, foundation-model, large-scale, single-cell, transformer]
 year: 2024
-version: "1.0"
 institution: "Tsinghua University, Alibaba DAMO Academy"
 authors: "Minghao Hao, Jing Gong, Xiangzhe Zeng, Chiming Liu, Yixin Wang, Xingyi Cheng, Taifeng Wang, Jian Zhang, Le Song"
 architecture: "Transformer (xTrimoGene)"

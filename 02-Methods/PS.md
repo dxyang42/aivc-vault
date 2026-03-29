@@ -6,7 +6,6 @@ authors: "David Li, Wei Li, et al."
 architecture: "Statistical Framework"
 paper: "Nature Cell Biology 2025"
 code: "https://github.com/davidliwei/PS"
-version: 1.0.0
 status: 已收录
 date: 2026-03-29
 ---

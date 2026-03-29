@@ -6,7 +6,6 @@ authors: "Sichao Li, Yinqi Bai, Hao Zhu, et al."
 architecture: "Spatiotemporal Graph Neural Network"
 paper: "Nature Methods 2024"
 code: "https://github.com/Sichao25/spateo-release"
-version: 1.0.0
 status: 已收录
 date: 2026-03-29
 ---

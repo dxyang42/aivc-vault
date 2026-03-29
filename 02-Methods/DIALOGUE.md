@@ -1,7 +1,6 @@
 ---
 tags: [method, multicellular-programs, cell-cell-interaction, tissue-analysis, 2022]
 year: 2022
-version: "1.0"
 institution: "Stanford University / Weizmann Institute"
 authors: "Livnat Jerby-Arnon, et al."
 architecture: "Penalized Canonical Variates Analysis"

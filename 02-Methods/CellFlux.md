@@ -1,7 +1,6 @@
 ---
 tags: [method, flow-model, normalizing-flow, single-cell, perturbation-prediction]
 year: "待验证"
-version: "1.0"
 institution: "待验证"
 authors: "待验证"
 architecture: "Normalizing Flow"

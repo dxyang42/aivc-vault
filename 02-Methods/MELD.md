@@ -1,7 +1,6 @@
 ---
 tags: [method, manifold-learning, continuous-effect, graph-signal-processing, 2021]
 year: 2021
-version: "1.0"
 institution: "Yale University (Krishnaswamy Lab)"
 authors: "David B. Burkhardt, et al."
 architecture: "Graph Signal Processing"

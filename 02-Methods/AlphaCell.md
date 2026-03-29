@@ -1,7 +1,6 @@
 ---
 tags: [method, world-model, tongji, 2026, flow-matching, perturbation-prediction]
 year: 2026
-version: "1.0"
 institution: "同济大学 DELTA Lab"
 authors: "啜国晖, 陈晓涵, 杨兴博, 高溢骋, 汪伟旭, 赵宇恒, 董科竟, 何斌, 刘琦, Fabian J. Theis"
 architecture: "World Model + Flow Matching"

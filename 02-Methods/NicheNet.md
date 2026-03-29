@@ -1,7 +1,6 @@
 ---
 tags: [method, cell-communication, ligand-receptor, network-inference, 2019]
 year: 2019
-version: "1.0"
 institution: "VIB-UGent Center for Inflammation Research (Saeys Lab)"
 authors: "Robin Browaeys, Yvan Saeys, et al."
 architecture: "Network-based Inference"

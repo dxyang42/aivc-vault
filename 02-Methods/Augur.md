@@ -1,7 +1,6 @@
 ---
 tags: [method, cell-type-prioritization, classification, 2020, machine-learning]
 year: 2020
-version: "1.0"
 institution: "University of British Columbia"
 authors: "Michael Skinnider, Jordan Squair, et al."
 architecture: "Machine Learning Classifier"

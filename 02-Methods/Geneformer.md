@@ -1,7 +1,6 @@
 ---
 tags: [method, foundation-model, transformer, gene-ranking, network-biology]
 year: 2023
-version: "1.0"
 institution: "Broad Institute, MIT, Harvard Medical School"
 authors: "Christina V. Theodoris, Patrick D. Ellwanger, et al."
 architecture: "Transformer (Attention-based)"

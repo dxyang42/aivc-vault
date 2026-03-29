@@ -6,7 +6,6 @@ authors: "Jean Fan, et al."
 architecture: "Dynamical Systems + Graph Neural Network"
 paper: "Nature Biotechnology 2025"
 code: "https://github.com/jefworks/TopoVelo"
-version: 1.0.0
 status: 已收录
 date: 2026-03-29
 ---
