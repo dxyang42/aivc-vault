@@ -79,15 +79,15 @@ scBERT 采用 Performer 替代标准 Transformer，将复杂度从 O(n²) 降低
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │   标准Transformer:                                                  │
-│   Attention(Q,K,V) = softmax(Q·K^T / √d)·V                         │
+│   Attention(Q,K,V) = softmax(Q * K_T / sqrt(d))·V                         │
 │   复杂度: O(n²)  (n为序列长度)                                      │
 │                                                                     │
 │   Performer:                                                        │
-│   Attention(Q,K,V) = φ(Q)·φ(K)^T·V / φ(Q)·φ(K)^T·1                 │
+│   Attention(Q,K,V) = φ(Q) * phi(K)_T·V / φ(Q) * phi(K)_T·1                 │
 │                                                                     │
 │   其中 φ(·) 为正交随机特征映射:                                     │
 │                                                                     │
-│   φ(x) = h(x)/√m · [exp(w₁^T·x), ..., exp(w_m^T·x)]               │
+│   φ(x) = h(x)/sqrt(m) · [exp(w_1_T·x), ..., exp(w_m_T·x)]               │
 │                                                                     │
 │   复杂度: O(n)  (线性复杂度)                                        │
 │                                                                     │
@@ -112,8 +112,8 @@ scBERT 采用 Performer 替代标准 Transformer，将复杂度从 O(n²) 降低
 │                                                                     │
 │   目标: 预测被掩码基因的原始表达值                                  │
 │                                                                     │
-│   L_MLM = -E[ Σ log P(x_i | x_非掩码) ]                             │
-│            i∈掩码集合                                               │
+│   L_MLM = -E[ sum log P(x_i | x_非掩码) ]                             │
+│            i in 掩码集合                                               │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```

@@ -72,7 +72,7 @@ CellDrift 基于广义线性模型，显式建模时间一致性：
 │  输入: 时序单细胞数据                                                │
 │  ├── 时间点: t₁, t₂, t₃, ..., tₙ                                   │
 │  ├── 条件: 对照 vs 扰动                                              │
-│  └── 表达矩阵: X ∈ ℝ^(cells × genes)                                │
+│  └── 表达矩阵: X in R^(cells × genes)                                │
 │                                                                     │
 │       ↓                                                             │
 │  ┌─────────────────────────────────────────────────────────────┐   │
@@ -151,7 +151,7 @@ y_gi ~ GLM(μ_gi, φ)
 η_gi = β_g0 + β_g1·Time_i + β_g2·Condition_i + β_g3·(Time×Condition)_i
 
 约束条件（时间一致性）:
-|β_g1(t+1) - β_g1(t)| < λ  # 相邻时间点系数变化受限
+|beta_g1(t+1) - beta_g1(t)| < lambda  # 相邻时间点系数变化受限
 ```
 
 ### 时间一致性约束
@@ -168,7 +168,7 @@ def temporal_smoothness_constraint(beta_t, lambda_smooth):
     return lambda_smooth * smoothness_penalty
 
 # 添加到损失函数
-loss = negative_log_likelihood + temporal_smoothness_constraint(beta_time, λ)
+loss = negative_log_likelihood + temporal_smoothness_constraint(beta_time, lambda)
 ```
 
 ## 7. 训练数据

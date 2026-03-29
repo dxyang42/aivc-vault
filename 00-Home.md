@@ -7,7 +7,7 @@ date: 2026-03-29
 
 > **AI Virtual Cell Perturbation Prediction Knowledge Base**
 > 
-> 最后更新: 2026-03-29
+> 最后更新: 2026-03-29 (第9轮迭代)
 
 ---
 
@@ -15,11 +15,11 @@ date: 2026-03-29
 
 | 类别 | 数量 | 描述 |
 |------|------|------|
-| 🔬 **方法文档** | 35 | Perturbation 预测方法 |
+| 🔬 **方法文档** | 38 | Perturbation 预测方法 |
 | 👥 **团队文档** | 11 | 全球研究团队 |
 | 💡 **概念文档** | 9 | 核心概念与技术术语 |
 | 📦 **资源文档** | 8 | 数据集与代码 |
-| **总计** | **63** | 全部 Markdown 文档 |
+| **总计** | **66** | 全部 Markdown 文档 |
 
 ---
 
@@ -77,10 +77,17 @@ date: 2026-03-29
 | [[02-Methods/Cell_Oracle\|Cell Oracle]] | 2023 | GRN建模 |
 | [[02-Methods/Celcomen\|Celcomen]] | 2025 | 空间因果解耦 |
 
+#### 基础模型系列
+| 方法 | 年份 | 特点 |
+|------|------|------|
+| [[02-Methods/UCE\|UCE]] | 2024 | 跨物种通用细胞嵌入 |
+| [[02-Methods/CellFM\|CellFM]] | 2025 | 8亿参数RetNet架构 |
+| [[02-Methods/scMulan\|scMulan]] | 2024 | 多任务生成式语言模型 |
+
 #### 流匹配系列
 | 方法 | 年份 | 特点 |
 |------|------|------|
-| [[02-Methods/CellFlow\|CellFlow]] | 2025 | 流匹配 |
+| [[02-Methods/CellFlow\|CellFlow]] | 2024 | 流匹配最优传输 |
 | [[02-Methods/AlphaCell\|AlphaCell]] | 2026 | 世界模型 |
 | [[02-Methods/CFM-GP\|CFM-GP]] | 2026 | 条件流匹配 |
 | [[02-Methods/CellFlux\|CellFlux]] | 2025 | 基于流 |
@@ -112,6 +119,12 @@ date: 2026-03-29
 |------|------|------|
 | [[02-Methods/NetPerturb\|NetPerturb]] | 2025 | 深度学习网络流 |
 | [[02-Methods/Cell_Oracle\|Cell Oracle]] | 2023 | GRN建模 |
+
+#### 疾病建模与临床应用
+| 方法 | 年份 | 特点 |
+|------|------|------|
+| [[02-Methods/Perturb-Cancer\|Perturb-Cancer]] | 2024 | 患者来源癌症模型 |
+| [[02-Methods/DrugCell\|DrugCell]] | 2020 | 药物响应深度学习 |
 
 #### 可视化工具
 | 方法 | 年份 | 特点 |
@@ -157,6 +170,12 @@ date: 2026-03-29
 ---
 
 ## 📖 最近更新
+
+### 2026-03-29 (第9轮更新)
+- 新增 3 个方法文档
+  - [[02-Methods/UCE|UCE]] - 跨物种通用细胞嵌入 (Nature 2024)
+  - [[02-Methods/Perturb-Cancer|Perturb-Cancer]] - 患者来源癌症模型 (Nature Cancer 2024)
+  - [[02-Methods/CellFlow|CellFlow]] - 流匹配最优传输 (Nature Methods 2024)
 
 ### 2026-03-29 (第7轮更新)
 - 新增 3 个方法文档
