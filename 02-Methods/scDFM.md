@@ -1,169 +1,254 @@
----
-tags: [method, flow-matching, single-cell, perturbation, generative-model]
-year: 2026
-institution: "Shanghai Jiao Tong University"
-authors: "Chenglei Yu, Chuanrui Wang, Bangyan Liao, Tailin Wu"
-architecture: "Flow Matching + PAD-Transformer"
-paper: "https://arxiv.org/abs/2602.07103"
-code: "https://github.com/yu-chenglei/scDFM"
-status: "已收录"
-date: 2026-03-29
----
-
 # scDFM
 
 ## 基本信息
 
-- **全称**: Distributional Flow Matching Model for Robust Single-Cell Perturbation Prediction
-- **发表时间**: 2026年2月
-- **发表会议**: ICLR 2026 (Poster)
-- **机构**: 上海交通大学
-- **作者**: Chenglei Yu, Chuanrui Wang, Bangyan Liao, Tailin Wu
+| 属性 | 内容 |
+|------|------|
+| **名称** | scDFM (Distributional Flow Matching Model) |
+| **作者/团队** | Chenglei Yu, Chuanrui Wang, Bangyan Liao, Tailin Wu (上海交通大学) |
+| **发表时间** | 2026年2月 |
+| **发表期刊** | ICLR 2026 (Poster) |
+| **代码仓库** | https://github.com/yu-chenglei/scDFM |
+| **论文链接** | https://arxiv.org/abs/2602.07103 |
 
-## 核心技术
+## 核心思想
 
-scDFM 是一个基于条件流匹配（Conditional Flow Matching）的生成式框架，用于单细胞扰动预测。核心创新包括：
+scDFM 是一个基于**条件流匹配（Conditional Flow Matching）**的生成式框架，用于单细胞扰动预测。其核心创新在于**分布级建模**，不同于现有方法假设细胞级对应关系，scDFM 建模扰动后细胞的完整分布，能够捕捉群体层面的变化。
 
-1. **分布级建模**: 不同于现有深度学习方法假设细胞级对应关系，scDFM 建模扰动后细胞的完整分布，能够捕捉群体层面的变化
-2. **MMD 目标函数**: 引入最大均值差异（Maximum Mean Discrepancy）目标，使扰动后群体和对照群体在分布层面上对齐
-3. **PAD-Transformer**: 提出 Perturbation-Aware Differential Transformer 骨干架构，利用基因相互作用图和差分注意力机制捕捉上下文相关的表达变化
+核心创新：
+1. **分布级建模**: 不依赖细胞级对应，建模群体分布变化
+2. **MMD 目标函数**: 引入最大均值差异目标，使扰动后群体和对照群体在分布层面上对齐
+3. **PAD-Transformer**: 提出 Perturbation-Aware Differential Transformer 架构，利用基因相互作用图和差分注意力机制
 
-## 数学公式
-
-### 条件流匹配目标函数
-
-scDFM 采用条件流匹配框架，学习从对照分布到扰动分布的传输映射：
-
-$$v_\theta(x, t, c) = \mathbb{E}\left[\frac{x_1 - x_0}{t_1 - t_0} \Big| x_t = x, c\right]$$
-
-其中：
-- $x_0 \sim p_0$ 为对照状态分布
-- $x_1 \sim p_1$ 为扰动后状态分布
-- $c$ 为扰动条件编码
-- $t \in [0, 1]$ 为流时间参数
-
-条件流匹配损失函数：
-
-$$\mathcal{L}_{CFM} = \mathbb{E}_{t \sim \mathcal{U}(0,1), x_0 \sim p_0, x_1 \sim p_1}\left[\left\|v_\theta(x_t, t, c) - (x_1 - x_0)\right\|^2\right]$$
-
-其中 $x_t = (1-t)x_0 + tx_1$ 为线性插值路径。
-
-### MMD 损失公式
-
-为对齐分布级别的特征，scDFM 引入最大均值差异（MMD）损失：
-
-$$\mathcal{L}_{MMD} = \left\|\frac{1}{n}\sum_{i=1}^n \phi(x_i^{pred}) - \frac{1}{m}\sum_{j=1}^m \phi(x_j^{true})\right\|_{\mathcal{H}}^2$$
-
-其中：
-- $\phi(\cdot)$ 为核特征映射（常用 RBF 核）
-- $x_i^{pred}$ 为模型预测的扰动后细胞
-- $x_j^{true}$ 为真实的扰动后细胞
-- $\mathcal{H}$ 为再生核希尔伯特空间（RKHS）
-
-RBF 核函数定义为：
-
-$$k(x, y) = \exp\left(-\frac{\|x - y\|^2}{2\sigma^2}\right)$$
-
-总损失函数：
-
-$$\mathcal{L}_{total} = \mathcal{L}_{CFM} + \lambda_{MMD} \mathcal{L}_{MMD} + \lambda_{reg} \mathcal{L}_{reg}$$
-
-## PAD-Transformer 架构细节
-
-### 整体架构
-
-PAD-Transformer 是 scDFM 的核心骨干网络，包含以下关键组件：
+## 方法架构
 
 ```
-输入: 基因表达 x ∈ ℝ^n_genes, 扰动条件 c
-      ↓
-基因嵌入层: 将基因ID映射到d维嵌入空间
-      ↓
-扰动感知编码器: 注入扰动条件c到基因表示
-      ↓
-差分注意力层 × L: 捕捉上下文相关表达变化
-      ↓
-前馈网络: 输出预测速度场 v_θ(x,t,c)
+                    Input: Control Cell + Perturbation
+                           |
+        +------------------+------------------+
+        |                                     |
+   Control Cell                      Perturbation
+   Expression                        Condition
+        |                                     |
+        v                                     v
+   +-------------------+            +-------------------+
+   | Gene Expression   |            | Perturbation      |
+   | x_0               |            | Embedding         |
+   +---------+---------+            +---------+---------+
+             |                                |
+             +----------------+----------------+
+                              |
+                              v
+              +-------------------------------+
+              |   PAD-Transformer Backbone    |
+              |                               |
+              |   +-----------------------+   |
+              |   | Gene Embedding Layer  |   |
+              |   | (Gene ID -> d-dim)    |   |
+              |   +-----------+-----------+   |
+              |               |               |
+              |   +-----------v-----------+   |
+              |   | Perturbation-Aware    |   |
+              |   | Encoder               |   |
+              |   +-----------+-----------+   |
+              |               |               |
+              |   +-----------v-----------+   |
+              |   | Differential          |   |
+              |   | Attention Layers x L  |   |
+              |   +-----------+-----------+   |
+              |               |               |
+              |   +-----------v-----------+   |
+              |   | Feed-Forward Network  |   |
+              |   +-----------------------+   |
+              +---------------+---------------+
+                              |
+                              v
+              +-------------------------------+
+              |   Velocity Field Output       |
+              |                               |
+              |   v_theta(x, t, c)            |
+              +-------------------------------+
 ```
+
+## 条件流匹配框架
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              条件流匹配框架                                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   速度场网络: v_theta(x, t, c)                                      │
+│                                                                     │
+│   输入:                                                             │
+│   - x: 当前细胞状态                                                 │
+│   - t: 流时间参数 (0到1)                                            │
+│   - c: 扰动条件编码                                                 │
+│                                                                     │
+│   目标速度: v_target = (x_1 - x_0) / (t_1 - t_0)                   │
+│                                                                     │
+│   其中:                                                             │
+│   - x_0: 对照状态分布                                               │
+│   - x_1: 扰动后状态分布                                             │
+│                                                                     │
+│   流匹配损失:                                                       │
+│   L_CFM = E[ ||v_theta(x_t, t, c) - (x_1 - x_0)||^2 ]             │
+│                                                                     │
+│   其中 x_t = (1-t)*x_0 + t*x_1 为线性插值路径                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+## MMD 分布对齐损失
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              MMD 分布对齐损失                                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   L_MMD = || (1/n)*Sum(phi(x_i^pred)) -                           │
+│            (1/m)*Sum(phi(x_j^true)) ||^2                          │
+│                                                                     │
+│   其中:                                                             │
+│   - phi(): 核特征映射 (常用RBF核)                                   │
+│   - x_i^pred: 模型预测的扰动后细胞                                  │
+│   - x_j^true: 真实的扰动后细胞                                      │
+│                                                                     │
+│   RBF核函数:                                                        │
+│   k(x, y) = exp( -||x - y||^2 / (2*sigma^2) )                      │
+│                                                                     │
+│   总损失函数:                                                       │
+│   L_total = L_CFM + lambda_MMD*L_MMD + lambda_reg*L_reg             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+## PAD-Transformer 架构
 
 ### 基因相互作用图编码
 
-scDFM 利用先验的基因相互作用图（如 PPI 网络）指导注意力机制：
-
-$$A_{ij} = \text{Softmax}\left(\frac{Q_i K_j^T}{\sqrt{d_k}} + b_{ij}\right)$$
-
-其中 $b_{ij}$ 为基于基因相互作用图的偏置项：
-
-$$b_{ij} = \begin{cases} \beta & \text{if gene } i \text{ and } j \text{ interact} \\ 0 & \text{otherwise} \end{cases}$$
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              基因相互作用图注意力                                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   注意力权重计算:                                                   │
+│                                                                     │
+│   A_ij = Softmax( (Q_i*K_j^T)/sqrt(d_k) + b_ij )                   │
+│                                                                     │
+│   其中偏置项 b_ij 基于PPI网络:                                      │
+│                                                                     │
+│   b_ij = { beta  如果基因i和j互作                                   │
+│          { 0     否则                                               │
+│                                                                     │
+│   作用: 增强互作基因间的注意力权重                                  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
 ### 差分注意力机制
 
-差分注意力（Differential Attention）是 PAD-Transformer 的核心创新，用于捕捉扰动引起的表达变化：
-
-$$\text{DiffAttn}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V - \alpha \cdot \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} - \beta\right)V$$
-
-其中：
-- $\alpha$ 为可学习的差分权重
-- $\beta$ 为差分偏置
-- 第一项捕捉标准注意力，第二项抑制背景信号
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              差分注意力机制                                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   DiffAttn(Q, K, V) =                                               │
+│       softmax(Q*K^T/sqrt(d_k))*V -                                  │
+│       alpha*softmax(Q*K^T/sqrt(d_k) - beta)*V                      │
+│                                                                     │
+│   其中:                                                             │
+│   - alpha: 可学习的差分权重                                         │
+│   - beta: 差分偏置                                                  │
+│                                                                     │
+│   第一项: 标准注意力 (捕捉主要信号)                                 │
+│   第二项: 抑制背景信号                                              │
+│                                                                     │
+│   效果: 更好地捕捉扰动引起的表达变化                                │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
 ### 扰动条件编码
 
-扰动条件通过可学习的嵌入层编码：
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│              扰动条件编码                                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   单扰动编码:                                                       │
+│   c = Embed_pert(gene_id) + Embed_type(perturbation_type)          │
+│                                                                     │
+│   组合扰动编码 (求和聚合):                                          │
+│   c_combo = Sum(c_k)  (k=1到K)                                     │
+│                                                                     │
+│   其中:                                                             │
+│   - gene_id: 被扰动基因标识                                         │
+│   - perturbation_type: 扰动类型 (KO/KD/OE/药物)                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
-$$c = \text{Embed}_{pert}(gene\_id) + \text{Embed}_{type}(perturbation\_type)$$
+## 算法流程
 
-对于组合扰动，采用求和聚合：
+1. **输入编码**: 将基因表达和扰动条件编码为嵌入向量
+2. **PAD-Transformer 处理**: 通过差分注意力层处理输入
+3. **速度场预测**: 输出速度场 v_theta(x, t, c)
+4. **流匹配训练**: 优化流匹配损失和MMD损失
+5. **推理采样**: 通过ODE求解生成扰动后细胞
 
-$$c_{combo} = \sum_{k=1}^K c_k$$
+## Perturbation 预测能力
 
-## 输入/输出
+### 核心功能
 
-- **输入**: 
-  - 对照状态的单细胞基因表达数据 $x_0 \in \mathbb{R}^{n_{genes}}$
-  - 扰动信息 $c$（基因敲除/药物处理等）
-- **输出**: 
-  - 预测的扰动后单细胞基因表达分布 $p_1$
+| 功能 | 描述 |
+|------|------|
+| **分布级建模** | 建模扰动后细胞的完整分布 |
+| **组合扰动** | 支持多基因/药物组合预测 |
+| **鲁棒性** | 对稀疏和噪声数据鲁棒 |
+| **未见扰动** | 泛化到训练未见过的扰动 |
 
-## 网络结构
+### 适用场景
 
-- **架构类型**: Flow Matching + Transformer
-- **核心组件**:
-  - 条件流匹配模块（Conditional Flow Matching）
-  - PAD-Transformer 骨干网络（6-12层）
-  - 基因相互作用图编码（PPI网络）
-  - 差分注意力机制
-- **隐藏维度**: 512-1024
-- **注意力头数**: 8-16
-
-## 训练数据
-
-- 多个遗传扰动和药物扰动基准数据集
-- 支持组合扰动（combinatorial perturbations）预测
-- 使用 AdamW 优化器，学习率 1e-4
-- 批量大小: 512-1024
+- **基因敲除/敲入**: 预测基因扰动效应
+- **药物反应**: 预测药物处理后的细胞响应
+- **组合治疗**: 设计多药物组合方案
+- **虚拟实验**: 大规模扰动效应模拟
 
 ## 性能指标
 
-在多个基准测试中，scDFM 持续优于现有方法：
+| 指标 | 结果 | 对比基线 |
+|------|------|----------|
+| **组合扰动 MSE** | 降低 19.6% | 相比最强基线 |
+| **未见扰动泛化** | 强劲 | 优于传统方法 |
+| **分布恢复** | 优秀 | 更好恢复扰动效应 |
 
-- **组合扰动设置**: 相比最强基线，均方误差（MSE）降低 19.6%
-- **未见扰动泛化**: 在未见过的扰动上表现强劲
-- **分布级生成**: 更好地恢复扰动效应
+## 与其他方法的对比
 
-## 功能特点
+| 方法 | 主要区别 | 适用场景 |
+|------|----------|----------|
+| **scDFM** | 分布级流匹配 | 需要分布建模 |
+| **SCALE** | 大规模可扩展 | 1亿级扰动预测 |
+| **CFM-GP** | 跨细胞类型 | 细胞类型迁移 |
+| **GEARS** | 图神经网络 | 组合扰动预测 |
 
-1. **鲁棒性**: 对单细胞数据的稀疏性和噪声具有强鲁棒性
-2. **分布级建模**: 不依赖细胞级对应关系，捕捉群体层面变化
-3. **组合预测**: 支持组合扰动的预测
-4. **端到端训练**: 稳定的训练过程
+## 优势与局限
 
-## 应用场景
+### 优势
+- 分布级建模更符合生物学实际
+- 对稀疏和噪声数据鲁棒
+- 在组合扰动上表现优异
+- 数学理论保证（流匹配的收敛性）
 
-- 基因敲除/敲入效应预测
-- 药物反应预测
-- 组合治疗设计
-- 虚拟细胞实验
+### 局限
+- 需要配对的对照和扰动数据进行训练
+- 计算复杂度相对较高（需多次ODE求解）
+
+## 典型应用
+
+1. **基因功能研究**: 预测基因扰动的转录后果
+2. **药物筛选**: 虚拟筛选候选药物
+3. **组合优化**: 发现协同药物组合
+4. **疾病建模**: 模拟疾病相关基因变异
 
 ## 开源资源
 
@@ -171,20 +256,10 @@ $$c_{combo} = \sum_{k=1}^K c_k$$
 - **代码**: https://github.com/yu-chenglei/scDFM
 - **会议**: ICLR 2026 Poster
 
-## 优势与局限
+## 引用
 
-**优势**:
-- 分布级建模更符合生物学实际
-- 对稀疏和噪声数据鲁棒
-- 在组合扰动上表现优异
-- 数学理论保证（流匹配的收敛性）
-
-**局限**:
-- 需要配对的对照和扰动数据进行训练
-- 计算复杂度相对较高（需多次ODE求解）
-
-## 相关论文
-
-- Yu, C., Wang, C., Liao, B., & Wu, T. (2026). scDFM: Distributional Flow Matching Model for Robust Single-Cell Perturbation Prediction. *ICLR 2026*.
-- Lipman, Y., et al. (2022). Flow Matching for Generative Modeling. *ICLR 2023*.
-- Liu, X., et al. (2022). Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow. *ICLR 2023*.
+```
+Yu, C., Wang, C., Liao, B., & Wu, T. (2026). scDFM: Distributional 
+Flow Matching Model for Robust Single-Cell Perturbation Prediction. 
+ICLR 2026.
+```
