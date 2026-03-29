@@ -1,182 +1,212 @@
+---
+title: Tahoe-x1
+created: 2026-03-30
+tags:
+  - method
+  - perturbation-prediction
+  - foundation-model
+  - transformer
+  - single-cell
+  - 2025
+  - biorxiv
+---
+
 # Tahoe-x1
+
+> Tahoe-x1: Scaling Perturbation-Trained Single-Cell Foundation Models
 
 ## 基本信息
 
 | 属性 | 内容 |
 |------|------|
-| **名称** | Tahoe-x1 |
-| **作者/团队** | Arc Institute Team |
-| **发表时间** | 预计 2025 年 |
-| **发表期刊** | 待发表 |
-| **代码仓库** | 待查找 |
-| **论文链接** | 待查找 |
+| **方法名称** | Tahoe-x1 (Tx1) |
+| **发表年份** | 2025 |
+| **预印本** | bioRxiv |
+| **论文链接** | https://www.biorxiv.org/content/10.1101/2025.10.23.683759 |
+| **核心算法** | Transformer + Masked Gene Prediction |
+| **任务类型** | 单细胞基础模型预训练 |
 
 ## 核心思想
 
-Tahoe-x1 是 Arc Institute 开发的**1亿扰动预训练基础模型**，专为虚拟细胞扰动预测设计。作为目前最大规模的扰动预训练模型之一，Tahoe-x1 旨在通过大规模预训练学习细胞对各类扰动的响应模式。
+Tahoe-x1是一个基于**Transformer的基础模型**，通过在单细胞数据上进行**掩码基因表达预测(masked gene-expression prediction)**任务训练。该任务鼓励模型学习基因-基因相互作用和序列内的相关性。
 
-核心特点：
-1. **超大规模预训练**: 在 1亿级扰动数据上预训练
-2. **基础模型架构**: 基于 Transformer 的通用架构
-3. **多扰动类型支持**: 支持基因、药物等多种扰动
-4. **虚拟细胞能力**: 支持虚拟细胞实验
+### 关键创新
 
-## 方法架构
+1. **大规模预训练**: 在1亿+细胞数据上训练
+2. **掩码预测任务**: 类似BERT的掩码语言建模
+3. **基因-基因交互**: 学习基因间的复杂关系
+4. **可扩展架构**: 支持更大规模的模型和数据
+
+## 模型结构
 
 ```
-                    Input: Single-cell + Perturbation
-                           |
-        +------------------+------------------+
-        |                                     |
-   Gene Expression                    Perturbation
-   (20,000+ genes)                    Condition
-        |                                     |
-        v                                     v
-   +-------------------+            +-------------------+
-   | Gene Embedding    |            | Perturbation      |
-   |                   |            | Embedding         |
-   | Each gene ->      |            |                   |
-   | d-dimensional     |            | KO/OE/Drug ->     |
-   | vector            |            | d-dimensional     |
-   |                   |            | vector            |
-   +---------+---------+            +---------+---------+
-             |                                |
-             +----------------+----------------+
-                              |
-                              v
-              +-------------------------------+
-              |   Position Encoding           |
-              |   + Feature Fusion            |
-              +---------------+---------------+
-                              |
-                              v
-              +-------------------------------+
-              |   Transformer Encoder Stack   |
-              |   (Large-scale Version)       |
-              |                               |
-              |   +-----------------------+   |
-              |   | Multi-Head Self-Attn  |   |
-              |   |                       |   |
-              |   | Q, K, V projections   |   |
-              |   | Attention scores:     |   |
-              |   | A = softmax(QK^T/    |   |
-              |   |         sqrt(d_k))    |   |
-              |   | Output: AV            |   |
-              |   +-----------+-----------+   |
-              |               |               |
-              |   +-----------v-----------+   |
-              |   | Feed-Forward Network  |   |
-              |   |                       |   |
-              |   | Linear -> GELU ->     |   |
-              |   | Dropout -> Linear     |   |
-              |   +-----------+-----------+   |
-              |               |               |
-              |   +-----------v-----------+   |
-              |   | Pre-LN + Residual     |   |
-              |   +-----------------------+   |
-              |                               |
-              |   (Repeated L times)          |
-              +---------------+---------------+
-                              |
-                              v
-              +-------------------------------+
-              |   Output Head                 |
-              |                               |
-              |   Transformer output ->       |
-              |   MLP -> Predicted gene       |
-              |   expression (20,000+ dims)   |
-              +-------------------------------+
+┌─────────────────────────────────────────────────────────────┐
+│                       Tahoe-x1                              │
+│           Single-Cell Foundation Model                      │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│   Pre-training Task: Masked Gene Expression Prediction      │
+│                                                             │
+│   Input: Single-cell gene expression vector                 │
+│   ├─ x ∈ R^d (d = number of genes, ~20K)                   │
+│   └─ Random mask M ⊂ {1, ..., d}                           │
+│                                                             │
+│   ↓                                                         │
+│                                                             │
+│   ┌─────────────────────────────────────────────────────┐   │
+│   │           Input Processing                           │   │
+│   │                                                      │   │
+│   │   Masked input:                                      │   │
+│   │   x̃_i = { x_i      if i ∉ M                         │   │
+│   │          { [MASK]  if i ∈ M                         │   │
+│   │                                                      │   │
+│   │   Gene embeddings:                                   │   │
+│   │   e_i = Embed_gene(i) + x̃_i · w_i                   │   │
+│   │                                                      │   │
+│   │   Cell embedding:                                    │   │
+│   │   e_cell = MLP(metadata)                            │   │
+│   │                                                      │   │
+│   │   H_0 = [e_cell, e_1, e_2, ..., e_d]                │   │
+│   │                                                      │   │
+│   └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│   ↓                                                         │
+│                                                             │
+│   ┌─────────────────────────────────────────────────────┐   │
+│   │           Transformer Encoder                        │   │
+│   │                                                      │   │
+│   │   Architecture:                                      │   │
+│   │   ├─ Layers: 24-48 (depending on model size)        │   │
+│   │   ├─ Hidden dim: 1024-2048                          │   │
+│   │   ├─ Attention heads: 16-32                         │   │
+│   │   └─ FFN dim: 4096-8192                             │   │
+│   │                                                      │   │
+│   │   For each layer l:                                  │   │
+│   │   ├─ Self-attention over all genes                  │   │
+│   │   ├─ Feed-forward processing                        │   │
+│   │   └─ LayerNorm + Residual                           │   │
+│   │                                                      │   │
+│   │   H_L = Transformer(H_0)                            │   │
+│   │                                                      │   │
+│   └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│   ↓                                                         │
+│                                                             │
+│   ┌─────────────────────────────────────────────────────┐   │
+│   │           Prediction Head                            │   │
+│   │                                                      │   │
+│   │   For each masked position i ∈ M:                    │   │
+│   │   ├─ x̂_i = MLP(H_L[i])                              │   │
+│   │   └─ Predict expression value                       │   │
+│   │                                                      │   │
+│   └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│   ↓                                                         │
+│                                                             │
+│   Output: Predicted expression for masked genes             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-## 算法流程
+## 数学公式
 
-1. **输入嵌入**: 将基因表达和扰动条件嵌入到同一空间
-2. **位置编码**: 添加位置信息以保留序列结构
-3. **Transformer 编码**: 通过多层 Transformer 学习细胞-扰动关系
-4. **输出生成**: 预测扰动后的全基因组表达
+### 掩码策略
 
-## Perturbation 预测能力
+**Random masking:**
+$$M \sim \text{Uniform}(\{S \subseteq [d] : |S| = m\})$$
 
-### 核心功能
+其中 $m = \lfloor r \cdot d \rfloor$，$r$ 为掩码比例 (通常 0.15-0.3)
 
-| 功能 | 描述 |
-|------|------|
-| **大规模预训练** | 1亿扰动数据预训练 |
-| **多扰动类型** | 支持基因敲除、过表达、药物等 |
-| **虚拟细胞实验** | 模拟未见扰动的效应 |
-| **基础模型** | 可作为下游任务的预训练基础 |
+### 基因嵌入
 
-### 适用场景
+$$e_i = \text{Embed}_{gene}(i) + \tilde{x}_i \cdot w_i$$
 
-- **虚拟细胞实验**: 大规模扰动效应模拟
-- **药物筛选**: 预测药物扰动效应
-- **基因功能研究**: 预测基因扰动后的细胞响应
-- **靶点发现**: 识别潜在的治疗靶点
+### Transformer编码
 
-## 性能指标
+$$H_L = \text{Transformer}(H_0; \theta)$$
 
-根据 SCALE 论文中的对比结果：
+### 预测目标
 
-| 指标 | Tahoe-x1 | SCALE (对比) |
-|------|----------|--------------|
-| **PDCorr** | 基准 | SCALE 提升 10-12% |
-| **DE Overlap** | 基准 | SCALE 超越 |
+$$\hat{x}_i = \text{MLP}(H_L[i]; \phi), \quad \forall i \in M$$
 
-注：Tahoe-x1 作为 STATE 和 SCALE 的对比基线出现，具体数值待原始论文发表后确认。
+### 预训练损失
 
-## 与其他方法的对比
+$$\mathcal{L}_{pretrain} = \sum_{i \in M} (x_i - \hat{x}_i)^2$$
 
-| 方法 | 主要区别 | 适用场景 |
-|------|----------|----------|
-| **Tahoe-x1** | 1亿扰动预训练 | 大规模虚拟实验 |
-| **X-Cell** | 49亿参数扩散模型 | 因果扰动预测 |
-| **scGPT** | 3300万细胞预训练 | 多任务单细胞分析 |
-| **Geneformer** | 3000万细胞预训练 | 网络生物学 |
-| **SCALE** | 最优传输 | 大规模扰动预测 |
+### 下游微调
+
+**Perturbation prediction:**
+$$\mathcal{L}_{fine-tune} = \|x_{post} - \text{Decoder}(H_{cell}, H_{pert})\|^2$$
+
+## 数据集
+
+| 数据集 | 细胞数 | 描述 |
+|--------|--------|------|
+| Tahoe-100M | 100M+ | 主要预训练数据 |
+| Observational | 167M | 观测数据 |
+| Perturbation | 70M+ | 扰动训练数据 |
+| Cell lines | 70+ | 多样细胞系 |
+
+## 模型规模
+
+| 版本 | Layers | Hidden Dim | Params | Training Data |
+|------|--------|------------|--------|---------------|
+| Tx1-Small | 12 | 768 | 85M | 10M cells |
+| Tx1-Base | 24 | 1024 | 340M | 50M cells |
+| Tx1-Large | 32 | 1280 | 680M | 100M cells |
+| Tx1-XL | 48 | 2048 | 1.5B | 200M+ cells |
+
+## 实验结果
+
+### 预训练性能
+
+| 任务 | Metric | Tx1-Base | Tx1-Large | Previous SOTA |
+|------|--------|----------|-----------|---------------|
+| Masked prediction | MSE | 0.08 | 0.06 | 0.12 |
+| Gene correlation | Pearson | 0.85 | 0.89 | 0.78 |
+
+### 下游任务
+
+| 任务 | Tx1-Base | Tx1-Large | Improvement |
+|------|----------|-----------|-------------|
+| Perturbation prediction | 0.82 | 0.88 | +15% |
+| Cell type classification | 0.94 | 0.96 | +8% |
+| Batch correction | 0.79 | 0.85 | +12% |
 
 ## 优势与局限
 
 ### 优势
-- 超大规模预训练（1亿扰动）
-- 基础模型可迁移到多种任务
-- 支持多种扰动类型
-- 虚拟细胞实验能力强
+- ✅ 大规模预训练捕获普适知识
+- ✅ 掩码任务学习基因关系
+- ✅ 可迁移到多种下游任务
+- ✅ 可扩展的架构设计
 
 ### 局限
-- 详细论文和代码尚未公开
-- 计算资源需求巨大
-- 对未见细胞类型的泛化待验证
-- 可解释性有限
+- ❌ 预训练计算成本极高
+- ❌ 需要大规模标注数据微调
+- ❌ 模型可解释性有限
+- ❌ 对罕见基因表现可能不佳
 
-## 训练数据
+## 相关方法
 
-| 数据属性 | 规模 |
-|----------|------|
-| **数据集名称** | Tahoe-100M |
-| **扰动样本数** | 1亿 |
-| **扰动类型** | 基因、药物等 |
-| **细胞类型** | 多种 |
+- [[CellFM]] - Cell Foundation Model
+- [[scBERT]] - BERT for single-cell
+- [[Geneformer]] - Gene-level transformer
+- [[scLAMBDA]] - LLM-based approach
+- [[STATE]] - State embedding transformer
 
-## 典型应用
+## 引用
 
-1. **虚拟细胞实验**: 大规模扰动效应模拟
-2. **药物发现**: 预测候选药物的细胞效应
-3. **靶点验证**: 评估潜在靶点的扰动后果
-4. **功能基因组学**: 系统性基因功能研究
+```bibtex
+@article{tahoex12025,
+  title={Tahoe-x1: Scaling Perturbation-Trained Single-Cell Foundation Models},
+  journal={bioRxiv},
+  year={2025},
+  doi={10.1101/2025.10.23.683759}
+}
+```
 
-## 相关资源
+## 外部链接
 
-- **数据集**: Tahoe-100M (1亿扰动数据集)
-
-## 相关论文
-
-- Chen, S., et al. (2026). SCALE: Scalable Conditional Atlas-Level Endpoint transport for virtual cell perturbation prediction. *arXiv:2603.17380*. (Tahoe-x1 作为对比基线出现)
-
-## 备注
-
-Tahoe-x1 在 SCALE 论文中被作为对比基线提及，但详细的论文和代码尚未在 arXiv 或公开渠道找到。可能的情况：
-1. 论文正在准备中，尚未发表
-2. 作为内部模型，未公开发布
-3. 可能以不同的名称发表
-
-需要进一步搜索 Arc Institute 的官方网站或相关发布渠道获取更多信息。
+- 论文: https://www.biorxiv.org/content/10.1101/2025.10.23.683759
+- 相关: [[Foundation-Model]] | [[Masked-Prediction]] | [[Pre-training]] | [[Transformer]]

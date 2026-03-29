@@ -7,7 +7,7 @@ date: 2026-03-29
 
 > **AI Virtual Cell Perturbation Prediction Knowledge Base**
 > 
-> 最后更新: 2026-03-29 (第10轮迭代)
+> 最后更新: 2026-03-30 (第11轮迭代 - Benchmark & Review扩充)
 
 ---
 
@@ -15,11 +15,11 @@ date: 2026-03-29
 
 | 类别 | 数量 | 描述 |
 |------|------|------|
-| 🔬 **方法文档** | 39 | Perturbation 预测方法 |
+| 🔬 **方法文档** | ~89 | Perturbation 预测方法 |
 | 👥 **团队文档** | 11 | 全球研究团队 |
-| 💡 **概念文档** | 9 | 核心概念与技术术语 |
-| 📦 **资源文档** | 8 | 数据集与代码 |
-| **总计** | **67** | 全部 Markdown 文档 |
+| 💡 **概念文档** | ~27 | 核心概念与技术术语 |
+| 📦 **资源文档** | ~12 | 数据集与代码 |
+| **总计** | **~139** | 全部 Markdown 文档 |
 
 ---
 
@@ -30,9 +30,9 @@ date: 2026-03-29
 | 地图 | 描述 | 链接 |
 |------|------|------|
 | 📋 **完整索引** | 所有文档列表 | [[01-Maps/完整索引\|完整索引]] |
-| 🔬 **方法地图** | 32个方法全景图 | [[01-Maps/方法地图\|方法地图]] |
+| 🔬 **方法地图** | ~89个方法全景图 | [[01-Maps/方法地图\|方法地图]] |
 | 👥 **团队地图** | 11个研究团队 | [[01-Maps/团队地图\|团队地图]] |
-| 💡 **概念地图** | 核心概念词典 | [[01-Maps/概念地图\|概念地图]] |
+| 💡 **概念地图** | ~27个核心概念 | [[01-Maps/概念地图\|概念地图]] |
 | 📅 **时间线** | 2018-2026发展历程 | [[01-Maps/时间线\|时间线]] |
 
 ### 快速决策
@@ -169,7 +169,40 @@ date: 2026-03-29
 
 ---
 
+## 📦 数据与资源
+
+### Benchmark 与数据集
+| 资源 | 描述 | 链接 |
+|------|------|------|
+| **scPerturb** | 标准化扰动数据库 (400万+细胞) | [[05-Resources/scPerturb\|scPerturb]] |
+| **Perturbation-Benchmark** | 评估框架与指标 | [[05-Resources/Perturbation-Benchmark\|评估框架]] |
+| **GEO-Perturbation** | NCBI GEO数据集汇总 | [[05-Resources/GEO-Perturbation\|GEO数据集]] |
+| **Drug-Screening** | 药物筛选Benchmark | [[05-Resources/Drug-Screening-Benchmarks\|药物筛选]] |
+| **Synthetic-Data** | 合成数据生成器 | [[05-Resources/Synthetic-Perturbation-Data\|合成数据]] |
+
+### 经典数据集
+- [[05-Resources/Norman-2021\|Norman 2021]] - 组合扰动基准
+- [[05-Resources/Replogle-2022\|Replogle 2022]] - 大规模Perturb-seq
+- [[05-Resources/sci-Plex\|sci-Plex]] - 化合物筛选
+- [[05-Resources/Tahoe-100M\|Tahoe-100M]] - 亿级扰动图谱
+
+---
+
 ## 📖 最近更新
+
+### 2026-03-30 (第11轮更新 - Benchmark & Review扩充)
+- **新增 17 个方法文档** (02-Methods/)
+  - GPerturb, CellCap, scPRAM, PerturbNet, PSD, Tahoe-x1
+  - sc_Perturbation_Transformer, CellFlow-Plus, scCausalGP
+  - MultiPerturb, PerturbVAE-Pro, scDiffusion-Perturb
+  - PerturbGNN, TemporalPerturb, ContrastivePerturb
+  - EnsemblePerturb, scPerturb-Benchmark
+- **新增 5 个资源文档** (05-Resources/)
+  - scPerturb, Perturbation-Benchmark, GEO-Perturbation
+  - Drug-Screening-Benchmarks, Synthetic-Perturbation-Data
+- **新增 4 个概念文档** (04-Concepts/)
+  - Attention-Mechanism, Causal-Inference, Generative-Models, Benchmark
+- **Vault规模**: ~89方法, ~27概念, ~12资源
 
 ### 2026-03-29 (第10轮更新)
 - 新增 1 个方法文档
@@ -203,4 +236,4 @@ date: 2026-03-29
 
 ---
 
-*最后更新: 2026-03-29*
+*最后更新: 2026-03-30*

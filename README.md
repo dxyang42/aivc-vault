@@ -2,18 +2,18 @@
 
 > AI Virtual Cell Perturbation Prediction Knowledge Base
 > 
-> 最后更新: 2026-03-29
+> 最后更新: 2026-03-30 (第11轮迭代 - Benchmark & Review扩充)
 
 ## 📊 Vault 统计
 
 | 类别 | 数量 | 说明 |
 |------|------|------|
-| **方法文档** | 35 | 完整方法文档 |
+| **方法文档** | ~88 | 完整方法文档 |
 | **团队文档** | 11 | 全球研究团队 |
-| **概念文档** | 9 | 核心概念与技术术语 |
-| **数据集文档** | 8 | 数据集与资源 |
-| **总文档数** | 63 | 全部 Markdown 文档 |
-| **总字数** | ~260K | 约26万字符 |
+| **概念文档** | ~14 | 核心概念与技术术语 |
+| **数据集文档** | ~12 | 数据集与资源 |
+| **总文档数** | ~149 | 全部 Markdown 文档 |
+| **总字数** | ~300K+ | 约30万+字符 |
 
 ---
 
@@ -28,7 +28,7 @@ aivc-vault/
 │   ├── 概念地图.md               # 核心概念词典
 │   ├── 时间线.md                 # 发展历程 (2018-2026)
 │   └── 完整索引.md               # 所有文档索引
-├── 🔬 02-Methods/                # 方法文档 (35个)
+├── 🔬 02-Methods/                # 方法文档 (~88个)
 │   ├── scVI.md                   # VAE奠基 (2018)
 │   ├── scGen.md                  # 首个扰动预测 (2019)
 │   ├── scANVI.md                 # 半监督注释 (2019)
@@ -46,7 +46,11 @@ aivc-vault/
 │   ├── scOTM.md                  # 最优传输 (2025)
 │   ├── AlphaCell.md              # 世界模型 (2026)
 │   ├── CellHermes.md             # 细胞语言模型 (2026)
-│   └── ... (18个更多方法)
+│   ├── GPerturb.md               # 高斯过程 (2025)
+│   ├── CellCap.md                # 概率生成模型 (2025)
+│   ├── scPRAM.md                 # Transformer (2025)
+│   ├── PerturbNet.md             # 多模态生成AI (2025)
+│   └── ... (更多方法)
 ├── 👥 03-Teams/                  # 团队文档 (11个)
 │   ├── Arc_Institute.md          # 虚拟细胞先驱
 │   ├── Fabian_Theis_Lab.md       # scVI生态
@@ -59,7 +63,7 @@ aivc-vault/
 │   ├── Recursion-Pharma.md       # 工业界
 │   ├── Jure_Leskovec_Lab.md      # 图神经网络
 │   └── Westlake_Guo_Tiannan_Lab.md # 西湖大学
-├── 💡 04-Concepts/               # 概念文档 (9个)
+├── 💡 04-Concepts/               # 概念文档 (~14个)
 │   ├── 术语统一规范.md           # 术语标准
 │   ├── 方法关联图谱.md           # 关联可视化
 │   ├── 方法对比矩阵.md           # 横向对比
@@ -68,15 +72,25 @@ aivc-vault/
 │   ├── Transformer-in-Single-Cell.md # Transformer
 │   ├── GNN-in-Gene-Networks.md   # GNN技术
 │   ├── Diffusion-Models.md       # 扩散模型
-│   └── Flow-Matching.md          # 流匹配
-├── 📦 05-Resources/              # 资源 (8个)
+│   ├── Flow-Matching.md          # 流匹配
+│   ├── Attention-Mechanism.md    # 注意力机制
+│   ├── Causal-Inference.md       # 因果推断
+│   ├── Generative-Models.md      # 生成模型
+│   ├── Benchmark.md              # 基准测试
+│   └── Future-Directions.md      # 未来趋势
+├── 📦 05-Resources/              # 资源 (~12个)
 │   ├── 数据集资源.md             # 数据集汇总
 │   ├── 代码实现.md               # 代码资源
 │   ├── sci-Plex.md               # 化合物扰动
 │   ├── Norman-2021.md            # 组合扰动基准
 │   ├── Replogle-2022.md          # K562+RPE1
 │   ├── Tahoe-100M.md             # 1亿细胞图谱
-│   └── templates/                # 文档模板
+│   ├── scPerturb.md              # 标准化数据库
+│   ├── Perturbation-Benchmark.md # 评估框架
+│   ├── GEO-Perturbation.md       # GEO数据集
+│   ├── Drug-Screening-Benchmarks.md # 药物筛选
+│   ├── Synthetic-Perturbation-Data.md # 合成数据
+│   └── Perturbation-Analysis-Tools.md # 分析工具
 │       ├── 方法模板.md
 │       └── 团队模板.md
 └── 📂 99-Archive/                # 归档
