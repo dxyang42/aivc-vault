@@ -1,6 +1,7 @@
 ---
 tags: [method, foundation-model, large-scale, single-cell, transformer]
 year: 2024
+version: "1.0"
 institution: "Tsinghua University, Alibaba DAMO Academy"
 authors: "Minghao Hao, Jing Gong, Xiangzhe Zeng, Chiming Liu, Yixin Wang, Xingyi Cheng, Taifeng Wang, Jian Zhang, Le Song"
 architecture: "Transformer (xTrimoGene)"
@@ -80,7 +81,7 @@ scFoundation 采用 xTrimoGene 架构，专为单细胞数据设计：
 │                                                                     │
 │   目标: 重建被掩码基因的表达值                                      │
 │                                                                     │
-│   L_MGM = E[ ||x_掩码 - x̂_掩码||² ]                                │
+│   L_MGM = E[ ||x_masked - x_hat_masked||² ]                        │
 │                                                                     │
 │   作用: 学习基因间的依赖关系                                        │
 │                                                                     │
@@ -100,11 +101,11 @@ scFoundation 采用 xTrimoGene 架构，专为单细胞数据设计：
 │                                                                     │
 │   目标: 预测每个基因是否表达 (0/1)                                  │
 │                                                                     │
-│   L_GPP = -E[ y·log(ŷ) + (1-y)·log(1-ŷ) ]                          │
+│   L_GPP = -E[ y·log(y_hat) + (1-y)·log(1-y_hat) ]                  │
 │                                                                     │
 │   其中:                                                             │
 │   - y: 真实标签 (0=未表达, 1=表达)                                  │
-│   - ŷ: 预测概率                                                     │
+│   - y_hat: 预测概率                                                 │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -113,6 +114,8 @@ scFoundation 采用 xTrimoGene 架构，专为单细胞数据设计：
 
 ```
 L_total = L_MGM + λ·L_GPP
+
+其中 λ 是平衡两个任务的超参数
 ```
 
 ## 模型配置

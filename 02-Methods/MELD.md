@@ -1,3 +1,16 @@
+---
+tags: [method, manifold-learning, continuous-effect, graph-signal-processing, 2021]
+year: 2021
+version: "1.0"
+institution: "Yale University (Krishnaswamy Lab)"
+authors: "David B. Burkhardt, et al."
+architecture: "Graph Signal Processing"
+paper: "Nature Biotechnology 2021"
+code: "https://github.com/KrishnaswamyLab/MELD"
+status: "已收录"
+date: 2026-03-29
+---
+
 # MELD
 
 ## 基本信息

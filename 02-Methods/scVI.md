@@ -1,6 +1,7 @@
 ---
 tags: [method, vae, scvi-tools, 2018, foundation, variational-inference]
 year: 2018
+version: "1.0"
 institution: "UC Berkeley (Nir Yosef Lab)"
 authors: "Romain Lopez, Jeffrey Regier, Michael Cole, Michael Jordan, Nir Yosef"
 architecture: "VAE (Variational Autoencoder)"

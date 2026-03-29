@@ -1,3 +1,16 @@
+---
+tags: [method, multicellular-programs, cell-cell-interaction, tissue-analysis, 2022]
+year: 2022
+version: "1.0"
+institution: "Stanford University / Weizmann Institute"
+authors: "Livnat Jerby-Arnon, et al."
+architecture: "Penalized Canonical Variates Analysis"
+paper: "Nature Biotechnology 2022"
+code: "https://github.com/livnatje/DIALOGUE"
+status: "已收录"
+date: 2026-03-29
+---
+
 # DIALOGUE
 
 ## 基本信息

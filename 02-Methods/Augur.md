@@ -1,3 +1,16 @@
+---
+tags: [method, cell-type-prioritization, classification, 2020, machine-learning]
+year: 2020
+version: "1.0"
+institution: "University of British Columbia"
+authors: "Michael Skinnider, Jordan Squair, et al."
+architecture: "Machine Learning Classifier"
+paper: "Nature Methods 2020"
+code: "https://github.com/neurorestore/Augur"
+status: "已收录"
+date: 2026-03-29
+---
+
 # Augur
 
 ## 基本信息

@@ -1,3 +1,16 @@
+---
+tags: [method, crispr-screen, perturb-seq, seurat, 2021, quality-control]
+year: 2021
+version: "1.0"
+institution: "NY Genome Center (Satija Lab)"
+authors: "Efthymia Papalexi, et al."
+architecture: "Statistical Framework (LRT)"
+paper: "Cell 2021"
+code: "https://github.com/satijalab/seurat"
+status: "已收录"
+date: 2026-03-29
+---
+
 # Mixscape
 
 ## 基本信息

@@ -1,3 +1,16 @@
+---
+tags: [method, cell-communication, ligand-receptor, network-inference, 2019]
+year: 2019
+version: "1.0"
+institution: "VIB-UGent Center for Inflammation Research (Saeys Lab)"
+authors: "Robin Browaeys, Yvan Saeys, et al."
+architecture: "Network-based Inference"
+paper: "Nature Methods 2019"
+code: "https://github.com/saeyslab/nichenetr"
+status: "已收录"
+date: 2026-03-29
+---
+
 # NicheNet
 
 ## 基本信息
