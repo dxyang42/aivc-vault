@@ -8,12 +8,12 @@
 
 | 类别 | 数量 | 说明 |
 |------|------|------|
-| **方法文档** | 32 | 完整方法文档 |
+| **方法文档** | 35 | 完整方法文档 |
 | **团队文档** | 11 | 全球研究团队 |
 | **概念文档** | 9 | 核心概念与技术术语 |
 | **数据集文档** | 8 | 数据集与资源 |
-| **总文档数** | 60 | 全部 Markdown 文档 |
-| **总字数** | ~250K | 约25万字符 |
+| **总文档数** | 63 | 全部 Markdown 文档 |
+| **总字数** | ~260K | 约26万字符 |
 
 ---
 
@@ -28,7 +28,7 @@ aivc-vault/
 │   ├── 概念地图.md               # 核心概念词典
 │   ├── 时间线.md                 # 发展历程 (2018-2026)
 │   └── 完整索引.md               # 所有文档索引
-├── 🔬 02-Methods/                # 方法文档 (28个)
+├── 🔬 02-Methods/                # 方法文档 (35个)
 │   ├── scVI.md                   # VAE奠基 (2018)
 │   ├── scGen.md                  # 首个扰动预测 (2019)
 │   ├── scANVI.md                 # 半监督注释 (2019)
@@ -39,11 +39,14 @@ aivc-vault/
 │   ├── CPA.md                    # 组合扰动 (2023)
 │   ├── Cell_Oracle.md            # GRN建模 (2023)
 │   ├── scLAMBDA.md               # LLM入场 (2024)
+│   ├── CellDrift.md              # 时序扰动分析 (2024)
 │   ├── STATE.md                  # Transformer (2025)
 │   ├── CellFlow.md               # 流匹配 (2025)
+│   ├── CoupleVAE.md              # 耦合VAE (2025)
+│   ├── scOTM.md                  # 最优传输 (2025)
 │   ├── AlphaCell.md              # 世界模型 (2026)
 │   ├── CellHermes.md             # 细胞语言模型 (2026)
-│   └── ... (14个更多方法)
+│   └── ... (18个更多方法)
 ├── 👥 03-Teams/                  # 团队文档 (11个)
 │   ├── Arc_Institute.md          # 虚拟细胞先驱
 │   ├── Fabian_Theis_Lab.md       # scVI生态
@@ -101,19 +104,23 @@ aivc-vault/
 ### 3. 方法分类
 
 #### 按技术类型
-- **VAE系列**: scVI, scGen, CPA, totalVI, MultiVI, scANVI
-- **GNN系列**: GEARS
-- **Transformer系列**: STATE, scLAMBDA
-- **流匹配系列**: CellFlow, CFM-GP, CellFlux
+- **VAE系列**: scVI, scGen, CPA, totalVI, MultiVI, scANVI, CoupleVAE
+- **GNN系列**: GEARS, Celcomen
+- **Transformer系列**: STATE, scLAMBDA, CellFM, scKGBERT
+- **流匹配系列**: CellFlow, CFM-GP, CellFlux, DC-DSB, scDFM, SCALE
 - **世界模型**: AlphaCell
 - **语言模型**: CellHermes
-- **GRN方法**: Cell Oracle
-- **扩散模型**: scDFM, scPPDM
+- **GRN方法**: Cell Oracle, SCENIC
+- **扩散模型**: scDFM, scPPDM, X-Cell
+- **时序方法**: CellDrift, PRESCIENT
+- **最优传输**: scOTM, CellFlow, Waddington-OT
 
 #### 按年份
 - **2018-2019 奠基期**: scVI, scGen, scANVI
 - **2020-2021 多模态期**: totalVI, MultiVI, scArches
 - **2022-2023 发展期**: GEARS, CPA, Cell Oracle, Scouter
+- **2024-2025 爆发期**: scLAMBDA, STATE, CellFlow, Tahoe-x1, CellDrift, CoupleVAE, scOTM
+- **2026 前沿期**: AlphaCell, CellHermes, X-Cell
 - **2024-2025 爆发期**: scLAMBDA, STATE, CellFlow, Tahoe-x1
 - **2026 前沿期**: AlphaCell, CellHermes
 

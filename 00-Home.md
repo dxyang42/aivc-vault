@@ -15,11 +15,11 @@ date: 2026-03-29
 
 | 类别 | 数量 | 描述 |
 |------|------|------|
-| 🔬 **方法文档** | 32 | Perturbation 预测方法 |
+| 🔬 **方法文档** | 35 | Perturbation 预测方法 |
 | 👥 **团队文档** | 11 | 全球研究团队 |
 | 💡 **概念文档** | 9 | 核心概念与技术术语 |
 | 📦 **资源文档** | 8 | 数据集与代码 |
-| **总计** | **60** | 全部 Markdown 文档 |
+| **总计** | **63** | 全部 Markdown 文档 |
 
 ---
 
@@ -100,6 +100,24 @@ date: 2026-03-29
 | [[02-Methods/SCALE\|SCALE]] | 2025 | 大规模扩散 |
 | [[02-Methods/DC-DSB\|DC-DSB]] | 2025 | 方向约束薛定谔桥 |
 
+#### 因果推断系列
+| 方法 | 年份 | 特点 |
+|------|------|------|
+| [[02-Methods/scCausalVI\|scCausalVI]] | 2025 | 因果VAE + do-算子 |
+| [[02-Methods/CASCADE\|CASCADE]] | 2024 | 因果发现 |
+| [[02-Methods/CausalBERT\|CausalBERT]] | 2025 | 预训练因果语言模型 |
+
+#### 网络干扰系列
+| 方法 | 年份 | 特点 |
+|------|------|------|
+| [[02-Methods/NetPerturb\|NetPerturb]] | 2025 | 深度学习网络流 |
+| [[02-Methods/Cell_Oracle\|Cell Oracle]] | 2023 | GRN建模 |
+
+#### 可视化工具
+| 方法 | 年份 | 特点 |
+|------|------|------|
+| [[02-Methods/Perturb-Viz\|Perturb-Viz]] | 2024 | 交互式可视化平台 |
+
 ---
 
 ## 📚 核心资源
@@ -139,6 +157,12 @@ date: 2026-03-29
 ---
 
 ## 📖 最近更新
+
+### 2026-03-29 (第7轮更新)
+- 新增 3 个方法文档
+  - [[02-Methods/CausalBERT\|CausalBERT]] - 预训练因果语言模型
+  - [[02-Methods/NetPerturb\|NetPerturb]] - 深度学习网络流预测
+  - [[02-Methods/Perturb-Viz\|Perturb-Viz]] - 扰动效应可视化平台
 
 ### 2026-03-29
 - 新增 5 个方法文档
