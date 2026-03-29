@@ -160,82 +160,6 @@ aivc-vault/
 
 ---
 
-## 🔄 版本历史
-
-### V1 - 基础模型版 (2026-03-25)
-- 5个基础方法文档
-- 简单分类整理
-
-### V2 - Perturbation 基础版 (2026-03-26)
-- 扩充到8个方法
-- 添加 Perturbation 专用方法
-
-### V3 - 大规模扩充版 (2026-03-27)
-- 30+方法初步整理
-- 基础分类体系
-- 完整报告: `projects/aivc-report/`
-
-### V4 - Obsidian 知识库版 (2026-03-28)
-- 迁移到 Obsidian Vault 格式
-- PARA + Zettelkasten 结构
-- Git 版本控制
-
-### V5 - 结构优化版 (2026-03-28)
-- 补充 scVI 生态方法
-- 创建方法选择指南
-- 添加 Dataview 查询
-
-### V6 - 批判审查版 (2026-03-29)
-- 完整审查28个方法文档
-- 补充5个核心方法的数学公式
-- 创建术语统一规范
-- 创建方法关联图谱
-- 9个Mermaid可视化图表
-
-### V7 - 最终完善版 (2026-03-29) ⭐ 当前
-- 最终统计与验证
-- 完整索引与导航优化
-- 最终版本 README
-- V7 完成报告
-- **总计: 84个文档, 28个方法, 11个团队, 9个概念文档**
-
----
-
-## 🙏 贡献者与来源
-
-### 方法来源
-
-| 团队/机构 | 代表方法 | 贡献 |
-|-----------|----------|------|
-| **UC Berkeley (Nir Yosef Lab)** | scVI, scANVI, totalVI, MultiVI | VAE生态奠基 |
-| **Helmholtz Munich (Fabian Theis Lab)** | scGen, CPA, scArches, CellFlow | 应用导向 |
-| **Arc Institute** | STATE, Tahoe-x1, Tahoe-100M | 虚拟细胞 |
-| **同济 DELTA Lab** | AlphaCell, CellHermes | 中国突破 |
-| **Stanford (Jure Leskovec Lab)** | GEARS | GNN+知识图谱 |
-| **WashU (Samantha Morris Lab)** | Cell Oracle | GRN建模 |
-| **Yale** | scLAMBDA | LLM入场 |
-| **腾讯 AI Lab** | scBERT, scGPT-spatial | 基础模型 |
-| **其他机构** | ... | 多样贡献 |
-
-### 数据集来源
-
-- **Norman 2021** - 组合扰动基准
-- **Replogle 2022** - K562 + RPE1
-- **Srivatsan 2020** - sci-Plex 化合物
-- **Tahoe-100M** - Arc Institute 1亿细胞
-
----
-
-## 🛠️ 技术栈
-
-- **笔记系统**: Obsidian
-- **版本控制**: Git
-- **结构方法**: PARA + Zettelkasten
-- **可视化**: Mermaid
-- **查询**: Dataview (可选)
-
----
-
 ## 📖 使用建议
 
 ### 对于初学者
@@ -263,6 +187,6 @@ aivc-vault/
 
 ---
 
-*Vault 创建: 2026-03-28*
-*最后更新: 2026-03-29*
-*版本: V7 (最终版)*
+*Vault 创建: 2026-03-28*  
+*最后更新: 2026-03-29*  
+*版本: V7*
