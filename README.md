@@ -2,18 +2,17 @@
 
 > AI Virtual Cell Perturbation Prediction Knowledge Base
 > 
-> 最后更新: 2026-03-30 (第11轮迭代 - Benchmark & Review扩充)
+> 最后更新: 2026-03-30
 
 ## 📊 Vault 统计
 
 | 类别 | 数量 | 说明 |
 |------|------|------|
-| **方法文档** | ~88 | 完整方法文档 |
+| **方法文档** | 89 | 完整方法文档 |
 | **团队文档** | 11 | 全球研究团队 |
 | **概念文档** | ~14 | 核心概念与技术术语 |
 | **数据集文档** | ~12 | 数据集与资源 |
-| **总文档数** | ~149 | 全部 Markdown 文档 |
-| **总字数** | ~300K+ | 约30万+字符 |
+| **总文档数** | ~150 | 全部 Markdown 文档 |
 
 ---
 
@@ -28,33 +27,22 @@ aivc-vault/
 │   ├── 概念地图.md               # 核心概念词典
 │   ├── 时间线.md                 # 发展历程 (2018-2026)
 │   └── 完整索引.md               # 所有文档索引
-├── 🔬 02-Methods/                # 方法文档 (~88个)
-│   ├── scVI.md                   # VAE奠基 (2018)
-│   ├── scGen.md                  # 首个扰动预测 (2019)
-│   ├── scANVI.md                 # 半监督注释 (2019)
-│   ├── totalVI.md                # RNA+Protein (2020)
-│   ├── MultiVI.md                # 多组学整合 (2021)
-│   ├── scArches.md               # 迁移学习 (2021)
-│   ├── GEARS.md                  # GNN+知识图谱 (2023)
-│   ├── CPA.md                    # 组合扰动 (2023)
-│   ├── Cell_Oracle.md            # GRN建模 (2023)
-│   ├── scLAMBDA.md               # LLM入场 (2024)
-│   ├── CellDrift.md              # 时序扰动分析 (2024)
-│   ├── STATE.md                  # Transformer (2025)
-│   ├── CellFlow.md               # 流匹配 (2025)
-│   ├── CoupleVAE.md              # 耦合VAE (2025)
-│   ├── scOTM.md                  # 最优传输 (2025)
-│   ├── AlphaCell.md              # 世界模型 (2026)
-│   ├── CellHermes.md             # 细胞语言模型 (2026)
-│   ├── GPerturb.md               # 高斯过程 (2025)
-│   ├── CellCap.md                # 概率生成模型 (2025)
-│   ├── scPRAM.md                 # Transformer (2025)
-│   ├── PerturbNet.md             # 多模态生成AI (2025)
-│   └── ... (更多方法)
+├── 🔬 02-Methods/                # 方法文档 (89个)
+│   ├── VAE/                      # VAE系列方法 (8)
+│   ├── Transformer/              # Transformer系列 (8)
+│   ├── GNN/                      # 图神经网络系列 (5)
+│   ├── Flow/                     # 流匹配系列 (7)
+│   ├── Diffusion/                # 扩散模型系列 (3)
+│   ├── LLM/                      # 语言模型系列 (5)
+│   ├── GRN/                      # 基因调控网络 (3)
+│   ├── OT/                       # 最优传输 (2)
+│   ├── Other/                    # 其他方法 (48)
+│   └── README.md                 # 方法目录说明
 ├── 👥 03-Teams/                  # 团队文档 (11个)
-│   ├── Arc_Institute.md          # 虚拟细胞先驱
-│   ├── Fabian_Theis_Lab.md       # scVI生态
-│   ├── MIT-Weissman-Lab.md       # 组合扰动
+├── 💡 04-Concepts/               # 概念文档 (~14个)
+├── 📦 05-Resources/              # 资源 (~12个)
+└── 📂 99-Archive/                # 归档
+```
 │   ├── Samantha_Morris_Lab.md    # GRN建模
 │   ├── Tongji_DELTA_Lab.md       # 同济DELTA
 │   ├── Tencent-AI-Lab.md         # 腾讯AI Lab
@@ -63,7 +51,7 @@ aivc-vault/
 │   ├── Recursion-Pharma.md       # 工业界
 │   ├── Jure_Leskovec_Lab.md      # 图神经网络
 │   └── Westlake_Guo_Tiannan_Lab.md # 西湖大学
-├── 💡 04-Concepts/               # 概念文档 (~14个)
+├── 💡 04-Concepts/               # 概念文档 (~27个)
 │   ├── 术语统一规范.md           # 术语标准
 │   ├── 方法关联图谱.md           # 关联可视化
 │   ├── 方法对比矩阵.md           # 横向对比
@@ -118,16 +106,21 @@ aivc-vault/
 ### 3. 方法分类
 
 #### 按技术类型
-- **VAE系列**: scVI, scGen, CPA, totalVI, MultiVI, scANVI, CoupleVAE
-- **GNN系列**: GEARS, Celcomen
-- **Transformer系列**: STATE, scLAMBDA, CellFM, scKGBERT
-- **流匹配系列**: CellFlow, CFM-GP, CellFlux, DC-DSB, scDFM, SCALE
-- **世界模型**: AlphaCell
-- **语言模型**: CellHermes
-- **GRN方法**: Cell Oracle, SCENIC
-- **扩散模型**: scDFM, scPPDM, X-Cell
-- **时序方法**: CellDrift, PRESCIENT
+- **VAE系列**: scVI, scGen, CPA, totalVI, MultiVI, scANVI, CoupleVAE, scCausalVI, PerturbVAE-Pro
+- **Transformer系列**: STATE, scLAMBDA, CellFM, scKGBERT, scBERT, scGPT, scGPT-spatial, scPRAM, sc_Perturbation_Transformer
+- **GNN系列**: GEARS, Celcomen, NetPerturb, PerturbGNN, scGNN
+- **流匹配系列**: CellFlow, CFM-GP, CellFlux, DC-DSB, scDFM, SCALE, CellFlow-Plus
+- **扩散模型系列**: scPPDM, scDiffusion-Perturb, X-Cell
+- **语言模型系列**: CellHermes, GenePT, Geneformer, scFoundation, scMulan
+- **GRN方法**: Cell Oracle, SCENIC, NicheNet
+- **因果推断**: CASCADE, scCausalVI, CausalBERT, CausCell
+- **时序方法**: CellDrift, PRESCIENT, scVelo, TemporalPerturb
+- **时空建模**: Spateo, TopoVelo, SPACEL
 - **最优传输**: scOTM, CellFlow, Waddington-OT
+- **网络干扰**: NetPerturb, Cell Oracle, SCENIC
+- **临床应用**: Perturb-Cancer, DrugCell, CELLOT
+- **可视化工具**: Perturb-Viz, scSHAP
+- **基准测试**: SCPERTURB, CAUSALBENCH, scPerturb-Benchmark, ITERPERT, PERTURB-FISH, SYSTEMA, Linear-Baseline
 
 #### 按年份
 - **2018-2019 奠基期**: scVI, scGen, scANVI
@@ -202,4 +195,4 @@ aivc-vault/
 ---
 
 *Vault 创建: 2026-03-28*  
-*最后更新: 2026-03-29*
+*最后更新: 2026-03-30*
