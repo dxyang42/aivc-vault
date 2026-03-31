@@ -1,13 +1,13 @@
 ---
 tags: [MOC, index, complete-list, navigation]
-date: 2026-03-30
+date: 2026-03-31
 ---
 
 # 完整索引 (Complete Index)
 
 > AIVC Perturbation Vault 所有文档完整列表
 > 
-> 最后更新: 2026-03-30
+> 最后更新: 2026-03-31
 
 ---
 
@@ -24,15 +24,15 @@ date: 2026-03-30
 
 | 文档 | 类型 | 描述 |
 |------|------|------|
-| [[方法地图\|方法地图]] | MOC | 方法全景图 |
-| [[团队地图\|团队地图]] | MOC | 研究团队 |
-| [[概念地图\|概念地图]] | MOC | 核心概念词典 |
-| [[时间线\|时间线]] | MOC | 发展历程 |
-| [[完整索引\|完整索引]] | 索引 | 本文档 |
+| [[method-map\|method-map]] | MOC | 方法全景图 |
+| [[team-map\|team-map]] | MOC | 研究团队 |
+| [[concept-map\|concept-map]] | MOC | 核心概念词典 |
+| [[timeline\|timeline]] | MOC | 发展历程 |
+| [[complete-index\|complete-index]] | 索引 | 本文档 |
 
 ---
 
-## 🔬 02-Methods 方法文档 (~94个)
+## 🔬 02-Methods 方法文档 (117个)
 
 ### VAE 系列 (8个)
 
@@ -173,6 +173,38 @@ date: 2026-03-30
 | [[../02-Methods/Other/PSD\|PSD]] | 2025 | - | 扰动状态分解 |
 | [[../02-Methods/Other/Dose-Response-Modeling\|Dose-Response-Modeling]] | - | - | 剂量响应建模 |
 
+### 因果推断系列 (3个)
+
+| 方法 | 年份 | 机构 | 技术 |
+|------|------|------|------|
+| [[../02-Methods/Causal-Inference/CausCell-2025\|CausCell]] | 2025 | - | 因果细胞 |
+| [[../02-Methods/Causal-Inference/scCausalVI-2025\|scCausalVI]] | 2025 | - | 因果VAE |
+| [[../02-Methods/Causal-Inference/CINEMA-OT\|CINEMA-OT]] | 2025 | - | 因果最优传输 |
+
+### 组合扰动系列 (3个)
+
+| 方法 | 年份 | 机构 | 技术 |
+|------|------|------|------|
+| [[../02-Methods/Combinatorial/GEARS-2024\|GEARS]] | 2024 | Stanford | GNN+知识图谱 |
+| [[../02-Methods/Combinatorial/GPerturb-2025\|GPerturb]] | 2025 | - | 高斯过程扰动 |
+| [[../02-Methods/Combinatorial/PDGrapher\|PDGrapher]] | 2025 | - | 扰动图网络 |
+
+### 零样本预测系列 (4个)
+
+| 方法 | 年份 | 机构 | 技术 |
+|------|------|------|------|
+| [[../02-Methods/Zero-Shot/PertAdapt\|PertAdapt]] | 2025 | - | 扰动自适应 |
+| [[../02-Methods/Zero-Shot/PertEval-scFM\|PertEval-scFM]] | 2025 | - | 基础模型评估 |
+| [[../02-Methods/Zero-Shot/scDCA\|scDCA]] | 2025 | - | 单细胞DCA |
+| [[../02-Methods/Zero-Shot/scUnify\|scUnify]] | 2025 | - | 单细胞统一 |
+
+### 评估与基准系列 (2个)
+
+| 方法 | 年份 | 机构 | 技术 |
+|------|------|------|------|
+| [[../02-Methods/Evaluation/Nature-Methods-Benchmark\|Nature-Methods-Benchmark]] | 2025 | - | 基准测试 |
+| [[../02-Methods/Evaluation/Systema\|Systema]] | 2025 | - | 系统评估 |
+
 ---
 
 ## 👥 03-Teams 团队文档
@@ -206,6 +238,19 @@ date: 2026-03-30
 | [[../04-Concepts/GNN-in-Gene-Networks\|GNN-in-Gene-Networks]] | GNN技术详解 |
 | [[../04-Concepts/Diffusion-Models\|Diffusion-Models]] | 扩散模型原理 |
 | [[../04-Concepts/Flow-Matching\|Flow-Matching]] | 流匹配技术 |
+| [[../04-Concepts/Optimal-Transport\|Optimal-Transport]] | 最优传输理论 |
+| [[../04-Concepts/Perturbation-Signature\|Perturbation-Signature]] | 扰动签名 |
+| [[../04-Concepts/Embedding\|Embedding]] | 嵌入表示 |
+| [[../04-Concepts/Batch-Effect\|Batch-Effect]] | 批次效应 |
+| [[../04-Concepts/Zero-Shot-Learning\|Zero-Shot-Learning]] | 零样本学习 |
+| [[../04-Concepts/Combinatorial-Perturbation\|Combinatorial-Perturbation]] | 组合扰动 |
+| [[../04-Concepts/Attention-Mechanism\|Attention-Mechanism]] | 注意力机制 |
+| [[../04-Concepts/Causal-Inference\|Causal-Inference]] | 因果推断 |
+| [[../04-Concepts/Generative-Models\|Generative-Models]] | 生成模型 |
+| [[../04-Concepts/Benchmark\|Benchmark]] | 基准测试 |
+| [[../04-Concepts/Latent-Space\|Latent-Space]] | 潜在空间 |
+| [[../04-Concepts/Negative-Binomial\|Negative-Binomial]] | 负二项分布 |
+| [[../04-Concepts/technology-comparison\|technology-comparison]] | 技术路线对比 |
 
 ---
 
@@ -238,4 +283,4 @@ date: 2026-03-30
 
 ---
 
-*最后更新: 2026-03-30*
+*最后更新: 2026-03-31*

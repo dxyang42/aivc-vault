@@ -1,35 +1,36 @@
 ---
-title: "scOTM"
-authors: "MDPI Biomedicines"
+title: "Departures"
+authors: "Chi et al."
 year: 2025
-institution: "MDPI Biomedicines"
+institution: "AAAI 2026"
 ---
 
-# scOTM
+# Departures
 
 ## 核心思想
 
-scOTM（Single-Cell Optimal Transport Model）是一种用于预测单细胞扰动响应的深度学习框架。该方法专注于从未配对数据预测单细胞扰动响应，并针对未见细胞类型的泛化进行了优化。scOTM整合来自分子和细胞生物学专用大语言模型的先验生物学知识。
+Departures是一种基于神经Schrödinger Bridge的单细胞扰动预测方法。该方法通过近似Schrödinger Bridge直接对齐不同扰动条件下控制和扰动单细胞群体的分布，利用Minibatch-OT（最优传输）配对避免双向推理，显著提高了计算效率。
 
-scOTM的核心创新在于其最优传输（Optimal Transport, OT）框架的应用。传统的扰动预测方法通常需要配对的控制-扰动细胞数据，而scOTM能够从未配对数据学习扰动效应，这大大提高了方法的实用性。同时，通过整合LLM的生物学知识，模型能够更好地理解基因功能和相互作用。
+Departures的核心创新在于将Schrödinger Bridge理论应用于单细胞扰动预测。与标准的扩散模型或流匹配方法不同，Schrödinger Bridge提供了一种概率框架来建模两个分布之间的最优随机转移，这对于建模细胞状态的随机扰动响应特别合适。
 
 ## 架构图
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                     scOTM Architecture                           │
+│                    Departures Architecture                       │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  Key Innovation: Unpaired Data + LLM Knowledge                   │
+│  Theoretical Foundation: Schrödinger Bridge                      │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │  Traditional: Requires paired Control-Perturbed cells   │    │
-│  │  scOTM: Works with unpaired data distributions          │    │
+│  │  Find stochastic process that transforms Control        │    │
+│  │  distribution to Perturbed distribution optimally       │    │
+│  │  (Minimizes KL divergence with prior process)           │    │
 │  └─────────────────────────────────────────────────────────┘    │
 │                                                                  │
-│  Input: Unpaired Control and Perturbed Populations               │
+│  Input: Control Population + Perturbation Condition              │
 │  ┌──────────────────────────┐    ┌──────────────────────────┐   │
-│  │   Control Population     │    │   Perturbed Population   │   │
-│  │   (No pairing info)      │    │   (No pairing info)      │   │
+│  │   Control Distribution   │    │   Target Distribution    │   │
+│  │   (Source)               │    │   (Perturbed)            │   │
 │  │  ┌────┐ ┌────┐ ┌────┐   │    │  ┌────┐ ┌────┐ ┌────┐   │   │
 │  │  │ C1 │ │ C2 │ │ C3 │   │    │  │ P1 │ │ P2 │ │ P3 │   │   │
 │  │  └────┘ └────┘ └────┘   │    │  └────┘ └────┘ └────┘   │   │
@@ -37,92 +38,97 @@ scOTM的核心创新在于其最优传输（Optimal Transport, OT）框架的应
 │              │                               │                  │
 │              ▼                               ▼                  │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │              Neural Encoders                             │   │
-│  │  ┌─────────────────────┐    ┌─────────────────────┐     │   │
-│  │  │  Control Encoder    │    │  Perturbed Encoder  │     │   │
-│  │  │  (Shared weights)   │    │  (Shared weights)   │     │   │
-│  │  │  ↓                  │    │  ↓                  │     │   │
-│  │  │  Latent Z_control   │    │  Latent Z_perturbed │     │   │
-│  │  └─────────────────────┘    └─────────────────────┘     │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│              │                               │                  │
-│              └───────────────┬───────────────┘                  │
-│                              ▼                                  │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │           Optimal Transport Alignment                    │   │
+│  │              Neural Schrödinger Bridge                   │   │
 │  │  ┌─────────────────────────────────────────────────┐    │   │
-│  │  │  Cost Matrix: c(Z_control, Z_perturbed)         │    │   │
-│  │  │  (Euclidean distance in latent space)           │    │   │
+│  │  │  Forward Process (Data → Noise)                 │    │   │
+│  │  │  q(x_t | x_0) = Control distribution drift      │    │   │
 │  │  │  ↓                                              │    │   │
-│  │  │  Optimal Transport Plan:                        │    │   │
-│  │  │  min Σ π(i,j) * c(i,j) + ε*KL(π||μ⊗ν)          │    │   │
-│  │  │  (Entropic regularization for smoothness)       │    │   │
+│  │  │  Learned Drift: u_t(x)                          │    │   │
+│  │  │  (Neural network parametrized)                  │    │   │
+│  │  │  ↓                                              │    │   │
+│  │  │  Backward Process (Noise → Data)                │    │   │
+│  │  │  p(x_t | x_1) = Perturbed distribution drift    │    │   │
 │  │  └─────────────────────────────────────────────────┘    │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                              │                                  │
 │                              ▼                                  │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │           LLM Knowledge Integration                      │   │
+│  │           Minibatch-OT Pairing                           │   │
 │  │  ┌─────────────────────────────────────────────────┐    │   │
-│  │  │  Biology LLM (e.g., BioGPT, PubMedBERT)         │    │   │
+│  │  │  Challenge: Full OT is expensive                 │    │   │
+│  │  │  Solution: Minibatch optimal transport           │    │   │
 │  │  │  ↓                                              │    │   │
-│  │  │  Gene Function Embeddings                       │    │   │
-│  │  │  Pathway Knowledge                              │    │   │
-│  │  │  Protein Interactions                           │    │   │
+│  │  │  1. Sample minibatch from Control               │    │   │
+│  │  │  2. Sample minibatch from Perturbed             │    │   │
+│  │  │  3. Compute OT cost matrix (small)              │    │   │
+│  │  │  4. Get optimal coupling π*                     │    │   │
+│  │  │  5. Use paired samples for training             │    │   │
 │  │  │  ↓                                              │    │   │
-│  │  │  Knowledge-guided Latent Space                  │    │   │
+│  │  │  Result: Efficient pairing without full OT      │    │   │
 │  │  └─────────────────────────────────────────────────┘    │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                              │                                  │
 │                              ▼                                  │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │              Conditional Generator                       │   │
+│  │           Training Objective                             │   │
 │  │  ┌─────────────────────────────────────────────────┐    │   │
-│  │  │  Input: Control cell + Perturbation condition   │    │   │
+│  │  │  Loss = E[||drift_θ(x_t) - drift_target||²]     │    │   │
+│  │  │       + λ * KL(regularization)                  │    │   │
+│  │  │  (Score matching + Schrödinger Bridge constraint)│    │   │
+│  │  └─────────────────────────────────────────────────┘    │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                              │                                  │
+│                              ▼                                  │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              Inference (One-shot)                        │   │
+│  │  ┌─────────────────────────────────────────────────┐    │   │
+│  │  │  Input: Control cell                            │    │   │
 │  │  │  ↓                                              │    │   │
-│  │  │  Decoder with OT-informed skip connections      │    │   │
+│  │  │  Apply learned drift: x_perturbed = x_control   │    │   │
+│  │  │                       + ∫ u_t(x_t) dt           │    │   │
+│  │  │  (Single forward pass, no iterative sampling)   │    │   │
 │  │  │  ↓                                              │    │   │
 │  │  │  Predicted Perturbed Cell                       │    │   │
 │  │  └─────────────────────────────────────────────────┘    │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                              │                                  │
 │                              ▼                                  │
-│  Output: Predicted Perturbed Cell State                          │
+│  Output: Predicted Perturbed Cell Distribution                   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## 核心机制
+## 核心创新
 
-1. **最优传输**: 从未配对数据学习控制到扰动的映射
-2. **LLM知识整合**: 利用生物学大语言模型的先验知识
-3. **熵正则化**: 平滑的最优传输计划
-4. **未见类型泛化**: 针对未见细胞类型的泛化优化
+1. **Schrödinger Bridge**: 概率框架建模分布间转移
+2. **Minibatch-OT**: 高效的小批量最优传输配对
+3. **单向推理**: 避免双向推理，提高推理效率
+4. **分布对齐**: 直接对齐控制和扰动分布
 
 ## 优缺点分析
 
 ### 优点
 
-- **无需配对数据**: 从未配对数据学习，数据要求更灵活
-- **LLM知识**: 整合生物学先验知识提高预测准确性
-- **泛化能力强**: 针对未见细胞类型的泛化优化
-- **理论基础扎实**: 基于最优传输理论，数学基础坚实
+- **理论基础**: 基于Schrödinger Bridge的坚实数学基础
+- **计算高效**: Minibatch-OT避免完整OT计算
+- **单向推理**: 推理速度快，无需迭代采样
+- **分布建模**: 直接建模分布间的转移
 
 ### 缺点
 
-- **计算复杂**: 最优传输计算成本较高
-- **LLM依赖**: 需要高质量的生物学LLM
-- **超参数敏感**: 熵正则化参数需要仔细调优
-- **分布假设**: 假设控制/扰动分布可传输
+- **理论复杂**: Schrödinger Bridge理论较为复杂
+- **超参数敏感**: 正则化参数需要仔细调优
+- **训练稳定**: 训练过程可能需要仔细设计
+- **分布假设**: 假设分布间存在合理的转移
 
 ## 相关方法
 
-- [[CellOT]] - 基于最优传输的单细胞扰动预测
-- [[scPRAM]] - VAE+OT+注意力的扰动预测
-- [[Departures]] - 基于Schrödinger Bridge的扰动预测
-- [[scFoundation]] - 可作为知识来源的基础模型
+- [[CellOT]] - 基于最优传输的扰动预测
+- [[scOTM]] - 深度学习最优传输框架
+- [[DC-DSB]] - 去噪Schrödinger桥
+- [[CellFlow]] - 基于流匹配的扰动预测
 
 ## 资源链接
 
-- **论文**: scOTM: A Deep Learning Framework for Predicting Single-Cell Perturbation Responses (MDPI Biomedicines, 2025)
-- **链接**: https://www.mdpi.com/2306-5354/12/8/884
+- **代码仓库**: https://github.com/ChangxiChi/Departures
+- **论文**: Departures: Distributional Transport for Single-Cell Perturbation Prediction with Neural Schrödinger Bridges (AAAI 2026, 2025)

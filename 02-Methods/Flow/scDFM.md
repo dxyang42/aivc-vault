@@ -1,3 +1,10 @@
+---
+title: "scDFM"
+authors: "Chenglei Yu, Chuanrui Wang, Bangyan Liao, Tailin Wu"
+year: 2026
+institution: "上海交通大学"
+---
+
 # scDFM
 
 ## 基本信息

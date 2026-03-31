@@ -1,3 +1,10 @@
+---
+title: "LPM"
+authors: "待确认"
+year: 2025
+institution: "待确认"
+---
+
 # LPM (Language Perturbation Model)
 
 ## 基本信息

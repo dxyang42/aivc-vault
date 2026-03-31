@@ -12,45 +12,59 @@
 ### 数学框架
 
 #### 1. 概率路径 (Probability Path)
-给定源分布 $p_0$（通常是标准高斯）和目标分布 $p_1$（数据分布），构造一个概率路径 $p_t$，其中 $t \in [0, 1]$：
+给定源分布 p_0（通常是标准高斯）和目标分布 p_1（数据分布），构造一个概率路径 p_t，其中 t ∈ [0, 1]：
 
-$$p_t(x) = \text{Interp}(p_0, p_1, t)$$
+```
+p_t(x) = Interp(p_0, p_1, t)
+```
 
 最简单的插值是线性插值：
-$$x_t = (1-t)x_0 + t x_1$$
+```
+x_t = (1-t) * x_0 + t * x_1
+```
 
-其中 $x_0 \sim p_0$，$x_1 \sim p_1$。
+其中 x_0 从 p_0 采样，x_1 从 p_1 采样。
 
 #### 2. 流方程 (Flow Equation)
-定义一个时间相关的向量场 $u_t(x)$，描述粒子在概率路径上的运动：
+定义一个时间相关的向量场 u_t(x)，描述粒子在概率路径上的运动：
 
-$$\frac{d}{dt}\phi_t(x) = u_t(\phi_t(x))$$
+```
+d/dt φ_t(x) = u_t(φ_t(x))
+```
 
-其中 $\phi_t$ 是流映射，满足 $\phi_0(x) = x$。
+其中 φ_t 是流映射，满足 φ_0(x) = x（恒等映射）。
 
 #### 3. 连续性方程 (Continuity Equation)
-向量场 $u_t$ 和概率密度 $p_t$ 满足连续性方程：
+向量场 u_t 和概率密度 p_t 满足连续性方程：
 
-$$\frac{\partial p_t}{\partial t} + \nabla \cdot (p_t u_t) = 0$$
+```
+∂p_t/∂t + ∇ · (p_t · u_t) = 0
+```
+
+这是质量守恒的数学表达，确保概率在流动过程中保持归一化。
 
 ## 训练目标
 
 ### 条件流匹配 (Conditional Flow Matching)
 核心公式：
 
-$$\mathcal{L}_{CFM} = \mathbb{E}_{t, x_0, x_1}\left[ \|v_\theta(x_t, t) - u_t(x_t|x_1)\|^2 \right]$$
+```
+L_CFM = E[||v_θ(x_t, t) - u_t(x_t|x_1)||²]
+```
 
 其中：
-- $v_\theta$ 是神经网络学习的向量场
-- $u_t(x_t|x_1)$ 是条件向量场
-- $x_t = (1-t)x_0 + t x_1$
+- v_θ 是神经网络学习的向量场
+- u_t(x_t|x_1) 是条件向量场（目标导向的流动方向）
+- x_t = (1-t) * x_0 + t * x_1 是插值点
 
 ### 最优传输流 (Optimal Transport Flow)
 使用最优传输理论构造概率路径：
 
-$$u_t^{OT}(x) = \frac{x_1 - x}{1-t}$$
+```
+u_t^OT(x) = (x_1 - x) / (1 - t)
+```
 
-这对应于直线插值路径，是最短路径（最小动能）。
+这对应于直线插值路径，是最短路径（最小动能），确保生成过程高效直接。
 
 ## 与扩散模型的对比
 
@@ -117,7 +131,7 @@ class CellFlowMatching(nn.Module):
 2. **Albergo et al. (2023)** "Stochastic Interpolants: A Unifying Framework for Flows and Diffusions" - *arXiv*
    - 统一框架
 
-3. **Tong et al. (2024)** "Improving Generalization of Flow Matching via $H_\infty$ Optimal Transport" - *ICML*
+3. **Tong et al. (2024)** "Improving Generalization of Flow Matching via H-infinity Optimal Transport" - *ICML*
    - 最优传输改进
 
 4. **Pooladian et al. (2023)** "Multisample Flow Matching" - *ICML*

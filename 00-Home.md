@@ -7,7 +7,7 @@ date: 2026-03-29
 
 > **AI Virtual Cell Perturbation Prediction Knowledge Base**
 > 
-> 最后更新: 2026-03-30 (第12轮迭代 - 文档同步更新)
+> 最后更新: 2026-03-31 (最终整合 - 117方法, 29概念)
 
 ---
 
@@ -15,11 +15,11 @@ date: 2026-03-29
 
 | 类别 | 数量 | 描述 |
 |------|------|------|
-| 🔬 **方法文档** | ~94 | Perturbation 预测方法 |
+| 🔬 **方法文档** | 117 | Perturbation 预测方法 |
 | 👥 **团队文档** | 11 | 全球研究团队 |
-| 💡 **概念文档** | ~27 | 核心概念与技术术语 |
+| 💡 **概念文档** | 29 | 核心概念与技术术语 |
 | 📦 **资源文档** | ~12 | 数据集与代码 |
-| **总计** | **~155** | 全部 Markdown 文档 |
+| **总计** | **~170** | 全部 Markdown 文档 |
 
 ---
 
@@ -29,20 +29,20 @@ date: 2026-03-29
 
 | 地图 | 描述 | 链接 |
 |------|------|------|
-| 📋 **完整索引** | 所有文档列表 | [[01-Maps/完整索引\|完整索引]] |
-| 🔬 **方法地图** | ~94个方法全景图 | [[01-Maps/方法地图\|方法地图]] |
-| 👥 **团队地图** | 11个研究团队 | [[01-Maps/团队地图\|团队地图]] |
-| 💡 **概念地图** | ~27个核心概念 | [[01-Maps/概念地图\|概念地图]] |
-| 📅 **时间线** | 2018-2026发展历程 | [[01-Maps/时间线\|时间线]] |
+| 📋 **完整索引** | 所有文档列表 | [[01-Maps/complete-index\|complete-index]] |
+| 🔬 **方法地图** | 117个方法全景图 | [[01-Maps/method-map\|method-map]] |
+| 👥 **团队地图** | 11个研究团队 | [[01-Maps/team-map\|team-map]] |
+| 💡 **概念地图** | 29个核心概念 | [[01-Maps/concept-map\|concept-map]] |
+| 📅 **时间线** | 2018-2026发展历程 | [[01-Maps/timeline\|timeline]] |
 
 ### 快速决策
 
 | 你的需求 | 推荐文档 |
 |----------|----------|
-| 不知道用哪个方法 | [[04-Concepts/方法选择指南\|方法选择指南]] |
-| 比较多个方法 | [[04-Concepts/方法对比矩阵\|方法对比矩阵]] |
-| 理解技术关联 | [[04-Concepts/方法关联图谱\|方法关联图谱]] |
-| 查找术语定义 | [[04-Concepts/术语统一规范\|术语统一规范]] |
+| 不知道用哪个方法 | [[04-Concepts/method-selection-guide\|method-selection-guide]] |
+| 比较多个方法 | [[04-Concepts/method-comparison-matrix\|method-comparison-matrix]] |
+| 理解技术关联 | [[04-Concepts/method-relationship-graph\|method-relationship-graph]] |
+| 查找术语定义 | [[04-Concepts/terminology-standard\|terminology-standard]] |
 
 ---
 
@@ -142,7 +142,7 @@ date: 2026-03-29
 - [[05-Resources/Tahoe-100M\|Tahoe-100M]] - 1亿细胞图谱
 
 ### 代码实现
-- [[05-Resources/代码实现\|代码实现]] - 各方法代码链接
+- [[05-Resources/code-implementations\|code-implementations]] - 各方法代码链接
 
 ### 文档模板
 - [[05-Resources/templates/方法模板\|方法模板]] - 添加新方法
@@ -153,17 +153,17 @@ date: 2026-03-29
 ## 🎯 使用场景
 
 ### 场景 1: 快速了解领域
-1. 阅读 [[01-Maps/时间线\|时间线]] 了解发展历程
-2. 浏览 [[01-Maps/方法地图\|方法地图]] 查看方法全景
-3. 查看 [[04-Concepts/方法选择指南\|方法选择指南]] 选择合适方法
+1. 阅读 [[01-Maps/timeline\|timeline]] 了解发展历程
+2. 浏览 [[01-Maps/method-map\|method-map]] 查看方法全景
+3. 查看 [[04-Concepts/method-selection-guide\|method-selection-guide]] 选择合适方法
 
 ### 场景 2: 深入研究特定方法
-1. 在 [[01-Maps/完整索引\|完整索引]] 中找到方法
+1. 在 [[01-Maps/complete-index\|complete-index]] 中找到方法
 2. 阅读方法文档了解细节
-3. 查看 [[04-Concepts/方法关联图谱\|方法关联图谱]] 理解技术关联
+3. 查看 [[04-Concepts/method-relationship-graph\|method-relationship-graph]] 理解技术关联
 
 ### 场景 3: 比较多个方法
-1. 使用 [[04-Concepts/方法对比矩阵\|方法对比矩阵]] 横向对比
+1. 使用 [[04-Concepts/method-comparison-matrix\|method-comparison-matrix]] 横向对比
 2. 查看各方法的优势与局限章节
 3. 参考应用场景推荐
 
@@ -236,4 +236,4 @@ date: 2026-03-29
 
 ---
 
-*最后更新: 2026-03-30*
+*最后更新: 2026-03-31*

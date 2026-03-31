@@ -8,8 +8,8 @@
 
 ### 基本架构
 VAE 由两部分组成：
-1. **编码器 (Encoder)**: $q_\phi(z|x)$ - 将数据映射到潜在空间
-2. **解码器 (Decoder)**: $p_\theta(x|z)$ - 从潜在空间重构数据
+1. **编码器 (Encoder)**: q_phi(z|x) - 将数据映射到潜在空间，给定输入x输出潜在变量z的后验分布
+2. **解码器 (Decoder)**: p_theta(x|z) - 从潜在空间重构数据，给定潜在变量z输出数据x的似然
 
 ```
 输入 x → 编码器 → 潜在变量 z → 解码器 → 重构 x̂
@@ -18,17 +18,19 @@ VAE 由两部分组成：
 ### 重参数化技巧 (Reparameterization Trick)
 
 #### 问题
-直接从 $q_\phi(z|x)$ 采样会导致梯度无法回传。
+直接从编码器输出的分布 q_phi(z|x) 中采样会导致梯度无法回传。
 
 #### 解决方案
 将随机性从网络中分离：
 
-$$z = \mu(x) + \sigma(x) \odot \epsilon$$
+```
+z = μ(x) + σ(x) ⊙ ε
+```
 
 其中：
-- $\mu(x), \sigma(x)$ 是编码器输出
-- $\epsilon \sim \mathcal{N}(0, I)$ 是标准正态噪声
-- $\odot$ 表示逐元素乘法
+- μ(x), σ(x) 是编码器输出的均值和对数方差
+- ε 从标准正态分布 N(0, I) 中采样得到
+- ⊙ 表示逐元素乘法
 
 #### 代码实现
 ```python
@@ -44,34 +46,44 @@ def reparameterize(self, mu, logvar):
 #### ELBO (Evidence Lower Bound)
 VAE 的训练目标是最大化 ELBO：
 
-$$\mathcal{L}_{ELBO} = \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x|z)] - D_{KL}(q_\phi(z|x) \| p(z))$$
+**ELBO (Evidence Lower Bound)** 由两部分组成：
+
+```
+L_ELBO = E[log p_theta(x|z)] - D_KL(q_phi(z|x) || p(z))
+```
 
 其中：
-- **重构损失**: 衡量重构质量
-- **KL 散度**: 正则化潜在分布接近先验 $p(z) = \mathcal{N}(0, I)$
+- **重构损失** E[log p_theta(x|z)]: 衡量解码器重构输入的能力，期望对数似然
+- **KL 散度** D_KL(q_phi(z|x) || p(z)): 正则化项，使后验分布接近先验分布 p(z) = N(0, I)
 
 #### 重构损失变体
 
 | 损失类型 | 公式 | 适用 |
 |----------|------|------|
-| **MSE** | $\|x - \hat{x}\|^2$ | 连续数据 |
-| **负二项** | $-\log NB(x; \mu, \theta)$ | 计数数据 (scRNA) |
+| **MSE** | 均方误差 ||x - x̂||² | 连续数据 |
+| **负二项** | 负对数似然 -log NB(x; μ, θ) | 计数数据 (scRNA) |
 | **零膨胀负二项** | ZINB | 处理高稀疏性 |
-| **泊松** | $-\log \text{Poisson}(x; \lambda)$ | 简单计数 |
+| **泊松** | 负对数似然 -log Poisson(x; λ) | 简单计数 |
 
 #### KL 散度计算
-对于高斯分布：
+对于高斯分布，KL散度的解析形式为：
 
-$$D_{KL}(q(z|x) \| p(z)) = -\frac{1}{2}\sum_{j=1}^{J}(1 + \log(\sigma_j^2) - \mu_j^2 - \sigma_j^2)$$
+```
+D_KL(q(z|x) || p(z)) = -1/2 * Σ_j (1 + log(σ_j²) - μ_j² - σ_j²)
+```
+
+其中 J 是潜在空间的维度，μ_j 和 σ_j 分别是第 j 维的均值和标准差。
 
 ### β-VAE
-引入超参数 $\beta$ 控制 KL 项权重：
+引入超参数 β 控制 KL 项权重：
 
-$$\mathcal{L}_{\beta-VAE} = \mathbb{E}[\log p(x|z)] - \beta \cdot D_{KL}(q(z|x) \| p(z))$$
+```
+L_β-VAE = E[log p(x|z)] - β · D_KL(q(z|x) || p(z))
+```
 
-- $\beta = 1$: 标准 VAE
-- $\beta > 1$: 更解耦的表示 (disentangled)
-- $\beta < 1$: 更好的重构质量
+- β = 1: 标准 VAE
+- β > 1: 更解耦的表示 (disentangled)
+- β < 1: 更好的重构质量
 
 ## 单细胞 VAE 架构
 
@@ -147,7 +159,12 @@ def nb_loss(x, mu, theta, eps=1e-10):
 ### 概念
 将条件信息（如批次、细胞类型）纳入 VAE：
 
-$$q_\phi(z|x, c), \quad p_\theta(x|z, c)$$
+```
+编码器: q_phi(z|x, c)
+解码器: p_theta(x|z, c)
+```
+
+其中 c 表示条件信息。
 
 ### 应用
 - **批次校正**: 条件化为批次标签
@@ -191,9 +208,13 @@ class BatchCorrectedVAE(ConditionalVAE):
 - 提高数据质量
 
 ### 4. 虚拟扰动预测 (Linear VAE)
-**scGen** 等方法利用 VAE 的线性潜在空间：
+**scGen** 等方法利用 VAE 的线性潜在空间进行扰动预测：
 
-$$z_{perturbed} = z_{control} + \Delta z_{perturbation}$$
+```
+z_perturbed = z_control + Δz_perturbation
+```
+
+即扰动后的潜在表示等于对照细胞的潜在表示加上扰动引起的位移。
 
 ### 5. 数据增强
 - 在潜在空间插值生成新细胞
@@ -218,9 +239,13 @@ $$z_{perturbed} = z_{control} + \Delta z_{perturbation}$$
 - **批次处理**: 神经网络批次嵌入
 
 ### 损失函数
-$$\mathcal{L} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{KL}(q(z|x) \| p(z))$$
+scVI 的损失函数由两部分组成：
 
-其中 $p(x|z)$ 使用 ZINB 分布。
+```
+L = E[log p(x|z)] - D_KL(q(z|x) || p(z))
+```
+
+其中 p(x|z) 使用 ZINB（零膨胀负二项）分布建模，适合处理单细胞 RNA 测序数据的稀疏性和过离散特性。
 
 ### 代码示例
 ```python

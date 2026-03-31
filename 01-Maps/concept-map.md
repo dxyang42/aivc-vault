@@ -1,11 +1,11 @@
 ---
 tags: [MOC, concepts, map]
-date: 2026-03-28
+date: 2026-03-31
 ---
 
 # 概念地图 (Concepts Map)
 
-> 核心概念与技术术语词典
+> 核心概念与技术术语词典 (29个概念)
 
 ## 基础概念
 
@@ -21,6 +21,7 @@ date: 2026-03-28
 - [[OE]] - 基因过表达 (Overexpression)
 - [[CRISPR]] - 基因编辑
 - [[化合物扰动]] - Chemical perturbation
+- [[Combinatorial-Perturbation]] - 组合扰动
 
 ## 模型架构
 
@@ -31,6 +32,8 @@ date: 2026-03-28
 - [[Flow Matching]] - 流匹配
 - [[Transformer]] - 注意力机制
 - [[GNN]] - 图神经网络
+- [[Attention-Mechanism]] - 注意力机制详解
+- [[Generative-Models]] - 生成模型
 
 ### 单细胞专用
 - [[GE]] - 基因表达 (Gene Expression)
@@ -38,6 +41,8 @@ date: 2026-03-28
 - [[Cell State]] - 细胞状态
 - [[Latent Space]] - 潜在空间
 - [[Perturbation Embedding]] - 扰动嵌入
+- [[Perturbation-Signature]] - 扰动签名
+- [[Embedding]] - 嵌入表示
 
 ## 评估指标
 
@@ -49,6 +54,14 @@ date: 2026-03-28
 - [[FID]] - Fréchet Inception Distance
 - [[UMAP]] - 降维可视化
 - [[t-SNE]] - 降维可视化
+- [[Benchmark]] - 基准测试
+
+## 数据与预处理
+
+- [[Batch-Effect]] - 批次效应
+- [[Zero-Shot-Learning]] - 零样本学习
+- [[Optimal-Transport]] - 最优传输
+- [[Negative-Binomial]] - 负二项分布
 
 ## 数据集
 
@@ -56,3 +69,11 @@ date: 2026-03-28
 - [[Replogle 2022]] - K562 + RPE1
 - [[Srivatsan 2020]] - sci-Plex
 - [[Tahoe-100M]] - Arc Institute
+
+## 指南与对比
+
+- [[method-selection-guide]] - 方法选择指南
+- [[method-comparison-matrix]] - 方法对比矩阵
+- [[method-relationship-graph]] - 方法关联图谱
+- [[terminology-standard]] - 术语统一规范
+- [[technology-comparison]] - 技术路线深度对比

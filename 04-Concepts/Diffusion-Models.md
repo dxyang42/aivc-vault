@@ -10,31 +10,35 @@
 前向过程是一个马尔可夫链，逐步向数据添加高斯噪声，直到数据变成纯噪声。
 
 ### 数学定义
-给定数据 $x_0 \sim q(x_0)$，前向过程定义为：
+给定数据 x_0 从真实分布 q(x_0) 中采样，前向过程定义为：
 
-$$q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t} x_{t-1}, \beta_t I)$$
+```
+q(x_t | x_{t-1}) = N(x_t; sqrt(1-β_t) * x_{t-1}, β_t * I)
+```
 
 其中：
-- $\beta_t \in (0, 1)$ 是方差调度参数
-- $t = 1, ..., T$ 是时间步
+- β_t ∈ (0, 1) 是方差调度参数，控制每一步添加的噪声量
+- t = 1, ..., T 是时间步，T 通常是 1000 左右
 
 ### 重参数化技巧
-利用高斯分布的性质，可以直接从 $x_0$ 采样 $x_t$：
+利用高斯分布的性质，可以直接从 x_0 采样 x_t：
 
-$$x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon$$
+```
+x_t = sqrt(ᾱ_t) * x_0 + sqrt(1 - ᾱ_t) * ε
+```
 
 其中：
-- $\alpha_t = 1 - \beta_t$
-- $\bar{\alpha}_t = \prod_{s=1}^{t} \alpha_s$
-- $\epsilon \sim \mathcal{N}(0, I)$
+- α_t = 1 - β_t
+- ᾱ_t = ∏_{s=1}^{t} α_s（累积乘积）
+- ε 从标准正态分布 N(0, I) 中采样
 
 ### 方差调度
 常见的方差调度策略：
 
 | 调度类型 | 公式 | 特点 |
 |----------|------|------|
-| **Linear** | $\beta_t = \frac{t}{T}(\beta_T - \beta_1) + \beta_1$ | 简单线性 |
-| **Cosine** | $\bar{\alpha}_t = \frac{f(t)}{f(0)}$，$f(t)=\cos(\frac{t/T+s}{1+s}\cdot\frac{\pi}{2})^2$ | 更平滑 |
+| **Linear** | β_t = (t/T)(β_T - β_1) + β_1 | 简单线性 |
+| **Cosine** | ᾱ_t = f(t)/f(0), 其中 f(t)=cos((t/T+s)/(1+s)·π/2)² | 更平滑 |
 | **Sigmoid** | 基于 sigmoid 函数 | 灵活可调 |
 
 ## 反向过程 (Reverse Process)
@@ -42,26 +46,43 @@ $$x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon$$
 ### 基本概念
 反向过程学习从噪声恢复数据的分布：
 
-$$p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t))$$
+```
+p_θ(x_{t-1} | x_t) = N(x_{t-1}; μ_θ(x_t, t), Σ_θ(x_t, t))
+```
+
+其中 μ_θ 和 Σ_θ 是神经网络学习的均值和方差参数。
 
 ### 训练目标
 
 #### 1. 简化目标 (Simplified Objective)
-最常用的训练目标：
+最常用的训练目标，预测添加的噪声：
 
-$$\mathcal{L}_{simple} = \mathbb{E}_{x_0, t, \epsilon}\left[ \|\epsilon - \epsilon_\theta(x_t, t)\|^2 \right]$$
+```
+L_simple = E[||ε - ε_θ(x_t, t)||²]
+```
 
-即预测添加的噪声。
+即让神经网络 ε_θ 学习预测前向过程中添加的噪声 ε。
 
 #### 2. 变分下界 (VLB)
 完整的变分下界：
 
-$$\mathcal{L}_{VLB} = \mathbb{E}_q\left[ D_{KL}(q(x_T|x_0) \| p(x_T)) + \sum_{t>1} D_{KL}(q(x_{t-1}|x_t, x_0) \| p_\theta(x_{t-1}|x_t)) - \log p_\theta(x_0|x_1) \right]$$
+```
+L_VLB = E[D_KL(q(x_T|x_0) || p(x_T)) + Σ_{t>1} D_KL(q(x_{t-1}|x_t,x_0) || p_θ(x_{t-1}|x_t)) - log p_θ(x_0|x_1)]
+```
+
+包含三个部分：
+1. 最终噪声分布与先验的 KL 散度
+2. 每个时间步反向过程的 KL 散度之和
+3. 数据重构的对数似然
 
 #### 3. 分数匹配视角
 扩散模型等价于学习分数函数（数据对数密度的梯度）：
 
-$$\nabla_x \log p_t(x) \approx -\frac{\epsilon_\theta(x, t)}{\sqrt{1-\bar{\alpha}_t}}$$
+```
+∇_x log p_t(x) ≈ -ε_θ(x, t) / sqrt(1 - ᾱ_t)
+```
+
+其中分数函数指示了数据分布密度增长最快的方向。
 
 ## 采样过程
 
@@ -107,14 +128,20 @@ def ddpm_sample(model, n_samples, n_steps=1000):
 ### 分类器引导 (Classifier Guidance)
 利用分类器的梯度引导生成：
 
-$$\tilde{\epsilon}_\theta(x_t, t, y) = \epsilon_\theta(x_t, t) - w \sqrt{1-\bar{\alpha}_t} \nabla_x \log p_\phi(y|x_t)$$
+```
+ε̃_θ(x_t, t, y) = ε_θ(x_t, t) - w · sqrt(1 - ᾱ_t) · ∇_x log p_φ(y|x_t)
+```
 
-其中 $w$ 是引导强度。
+其中 w 是引导强度，p_φ(y|x_t) 是分类器预测的条件概率。
 
 ### 无分类器引导 (Classifier-Free Guidance)
 同时训练条件化和无条件模型：
 
-$$\tilde{\epsilon}_\theta(x_t, t, y) = \epsilon_\theta(x_t, t, \emptyset) + w (\epsilon_\theta(x_t, t, y) - \epsilon_\theta(x_t, t, \emptyset))$$
+```
+ε̃_θ(x_t, t, y) = ε_θ(x_t, t, ∅) + w · (ε_θ(x_t, t, y) - ε_θ(x_t, t, ∅))
+```
+
+即无条件预测加上引导强度 w 倍的条件-无条件差异。这种方法不需要单独训练分类器。
 
 ## 在单细胞中的应用
 

@@ -1,0 +1,13 @@
+# Obsidian
+.obsidian/
+
+# Temporary files
+TASK_PLAN*.md
+FINDINGS*.md
+REVIEW*.md
+ROUND*.md
+AUDIT*.md
+
+# OS
+.DS_Store
+Thumbs.db

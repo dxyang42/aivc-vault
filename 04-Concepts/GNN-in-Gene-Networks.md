@@ -7,12 +7,12 @@
 ## 核心概念
 
 ### 图表示
-基因网络表示为图 $G = (V, E)$：
+基因网络表示为图 G = (V, E)：
 - **节点 (V)**: 基因、蛋白质或其他分子
 - **边 (E)**: 相互作用关系（调控、结合、共表达等）
 
 ### 节点特征
-每个节点 $v_i$ 有特征向量 $x_i \in \mathbb{R}^d$：
+每个节点 v_i 有特征向量 x_i ∈ R^d：
 - 基因表达值
 - 基因本体 (GO) 注释
 - 序列特征
@@ -32,33 +32,38 @@
 ### 基本框架
 GNN 通过迭代的消息传递更新节点表示：
 
-$$h_i^{(l+1)} = \text{UPDATE}^{(l)}\left(h_i^{(l)}, \text{AGGREGATE}^{(l)}\left(\{h_j^{(l)}: j \in \mathcal{N}(i)\}\right)\right)$$
+```
+h_i^(l+1) = UPDATE^(l)(h_i^(l), AGGREGATE^(l)({h_j^(l): j ∈ N(i)}))
+```
 
 其中：
-- $h_i^{(l)}$: 节点 $i$ 在第 $l$ 层的表示
-- $\mathcal{N}(i)$: 节点 $i$ 的邻居集合
-- $\text{AGGREGATE}$: 聚合邻居信息
-- $\text{UPDATE}$: 更新节点表示
+- h_i^(l): 节点 i 在第 l 层的表示
+- N(i): 节点 i 的邻居集合
+- AGGREGATE: 聚合邻居信息（如求和、平均、最大池化）
+- UPDATE: 更新节点表示
 
 ### 聚合函数
 
 | 聚合方式 | 公式 | 特点 |
 |----------|------|------|
-| **Mean** | $\frac{1}{|\mathcal{N}(i)|}\sum_{j \in \mathcal{N}(i)} h_j$ | 平滑，常用 |
-| **Sum** | $\sum_{j \in \mathcal{N}(i)} h_j$ | 保留度数信息 |
-| **Max** | $\max_{j \in \mathcal{N}(i)} h_j$ | 捕获最显著特征 |
+| **Mean** | (1/|N(i)|) * Σ_{j ∈ N(i)} h_j | 平滑，常用 |
+| **Sum** | Σ_{j ∈ N(i)} h_j | 保留度数信息 |
+| **Max** | max_{j ∈ N(i)} h_j | 捕获最显著特征 |
 
 ## GNN 架构变体
 
 ### 1. Graph Convolutional Network (GCN)
 
 #### 公式
-$$H^{(l+1)} = \sigma\left(\tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}H^{(l)}W^{(l)}\right)$$
+```
+H^(l+1) = σ(D̃^(-1/2) · Ã · D̃^(-1/2) · H^(l) · W^(l))
+```
 
 其中：
-- $\tilde{A} = A + I$: 加自环的邻接矩阵
-- $\tilde{D}$: 度矩阵
-- $W^{(l)}$: 可学习参数
+- Ã = A + I: 加自环的邻接矩阵
+- D̃: 度矩阵（对角矩阵，D̃_ii = Σ_j Ã_ij）
+- W^(l): 第 l 层的可学习参数矩阵
+- σ: 激活函数（如 ReLU）
 
 #### 特点
 - 谱域图卷积的简化
@@ -68,11 +73,19 @@ $$H^{(l+1)} = \sigma\left(\tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}H^{(l)}W^{(l)
 ### 2. Graph Attention Network (GAT)
 
 #### 注意力机制
-$$e_{ij} = \text{LeakyReLU}(a^T[Wh_i \| Wh_j])$$
-$$\alpha_{ij} = \frac{\exp(e_{ij})}{\sum_{k \in \mathcal{N}(i)}\exp(e_{ik})}$$
+```
+e_ij = LeakyReLU(a^T · [Wh_i || Wh_j])
+α_ij = exp(e_ij) / Σ_{k ∈ N(i)} exp(e_ik)
+```
+
+其中 a 是注意力参数向量，|| 表示向量拼接，α_ij 是节点 j 对节点 i 的注意力权重。
 
 #### 多头注意力
-$$h_i' = \|_{k=1}^{K}\sigma\left(\sum_{j \in \mathcal{N}(i)}\alpha_{ij}^{(k)}W^{(k)}h_j\right)$$
+```
+h_i' = ||_{k=1}^{K} σ(Σ_{j ∈ N(i)} α_ij^(k) · W^(k) · h_j)
+```
+
+K 个注意力头并行计算，结果拼接后得到最终表示。
 
 #### 在基因网络中的意义
 - 学习基因间相互作用的权重
