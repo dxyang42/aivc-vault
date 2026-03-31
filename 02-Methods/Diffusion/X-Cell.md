@@ -1,3 +1,20 @@
+---
+tags: [method, diffusion-model, foundation-model, single-cell, perturbation-prediction, [[Perturbation-Prediction]], [[Generative-Model]]]
+year: 2026
+institution: "Xaira Therapeutics"
+authors: "Xaira Therapeutics Team"
+architecture: "Diffusion Language Model"
+paper: "https://www.biorxiv.org/content/10.1101/2026.03.18.712807"
+code: "https://github.com/Xaira-Therapeutics/X-Cell"
+status: "已收录"
+date: "2026-03-29"
+---
+
+> 相关概念: [[Perturbation-Prediction]] | [[Diffusion-Model]] | [[Foundation-Model]] | [[Scaling-Law]]
+> 相关方法: [[scPPDM]] | [[scGPT]] | [[GenePT]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
+
 # X-Cell
 
 **X-Cell** 是由 Xaira Therapeutics 于 2026 年 3 月发布的扩散语言模型（Diffusion Language Model），是目前最大的因果扰动预测模型，拥有 49 亿参数（X-Cell-Ultra）。该模型通过整合多模态生物先验知识，实现了对跨多样细胞上下文的全基因组转录响应的精准预测。

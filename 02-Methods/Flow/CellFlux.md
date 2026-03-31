@@ -1,5 +1,5 @@
 ---
-tags: [method, flow-model, normalizing-flow, single-cell, perturbation-prediction]
+tags: [method, flow-model, normalizing-flow, single-cell, perturbation-prediction, [[Perturbation-Prediction]], [[Generative-Model]]]
 year: "待验证"
 institution: "待验证"
 authors: "待验证"
@@ -9,6 +9,11 @@ code: "待查找"
 status: "待验证 - 未找到正式发表的论文"
 date: "2026-03-29"
 ---
+
+> 相关概念: [[Perturbation-Prediction]] | [[Flow-Model]] | [[Normalizing-Flow]]
+> 相关方法: [[scDFM]] | [[CFM-GP]] | [[SCALE]] | [[scGen]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
 
 # CellFlux
 

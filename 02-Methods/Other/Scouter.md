@@ -1,9 +1,20 @@
 ---
+tags: [method, statistical-framework, single-cell, perturbation-analysis, 2022, [[Perturbation-Analysis]], [[Differential-Analysis]]]
 title: "Scouter"
 authors: "Miao Z, et al."
 year: 2022
 institution: "University of Cambridge"
+architecture: "Statistical Framework"
+paper: "Nature Communications 2022"
+code: "https://github.com/..."
+status: "已收录"
+date: "2026-03-29"
 ---
+
+> 相关概念: [[Perturbation-Analysis]] | [[Differential-Analysis]] | [[Statistical-Framework]]
+> 相关方法: [[Augur]] | [[MELD]] | [[Mixscape]] | [[PS]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
 
 # Scouter
 

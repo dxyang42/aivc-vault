@@ -1,5 +1,5 @@
 ---
-tags: [method, causal-discovery, grn, perturbation, deep-learning, 2024]
+tags: [method, causal-discovery, grn, perturbation, deep-learning, 2024, [[Causal-Discovery]], [[GRN]], [[Perturbation-Prediction]]]
 year: 2024
 institution: "University of Chicago, Gao Lab"
 authors: "Jingtao Wang, Ge Gao, et al."
@@ -9,6 +9,11 @@ code: "https://github.com/gao-lab/CASCADE"
 status: "已收录"
 date: "2026-03-29"
 ---
+
+> 相关概念: [[Causal-Discovery]] | [[GRN]] | [[Perturbation-Prediction]] | [[VAE]]
+> 相关方法: [[CellOracle]] | [[GEARS]] | [[SCENIC]] | [[NicheNet]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
 
 # CASCADE
 

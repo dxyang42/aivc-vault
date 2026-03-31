@@ -1,5 +1,10 @@
 ---
-tags: [method, cell-communication, ligand-receptor, network-inference, 2019]
+> 相关概念: [[Cell-Communication]] | [[Ligand-Receptor]] | [[GRN]] | [[Cell-Cell-Interaction]]
+> 相关方法: [[CellChat]] | [[CellPhoneDB]] | [[DIALOGUE]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
+
+tags: [method, cell-communication, ligand-receptor, network-inference, 2019, [[Cell-Communication]], [[GRN]]]
 year: 2019
 institution: "VIB-UGent Center for Inflammation Research (Saeys Lab)"
 authors: "Robin Browaeys, Yvan Saeys, et al."
@@ -9,6 +14,11 @@ code: "https://github.com/saeyslab/nichenetr"
 status: "已收录"
 date: 2026-03-29
 ---
+> 相关概念: [[Cell-Communication]] | [[Ligand-Receptor]] | [[GRN]] | [[Cell-Cell-Interaction]]
+> 相关方法: [[CellChat]] | [[CellPhoneDB]] | [[DIALOGUE]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
+
 
 # NicheNet
 

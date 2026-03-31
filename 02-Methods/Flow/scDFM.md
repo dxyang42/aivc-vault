@@ -1,9 +1,20 @@
 ---
+tags: [method, flow-model, flow-matching, single-cell, perturbation-prediction, [[Perturbation-Prediction]], [[Generative-Model]]]
 title: "scDFM"
 authors: "Chenglei Yu, Chuanrui Wang, Bangyan Liao, Tailin Wu"
 year: 2026
 institution: "上海交通大学"
+architecture: "Flow Matching"
+paper: "https://arxiv.org/abs/2602.07103"
+code: "https://github.com/yu-chenglei/scDFM"
+status: "已收录"
+date: "2026-03-29"
 ---
+
+> 相关概念: [[Perturbation-Prediction]] | [[Flow-Matching]] | [[Transformer]]
+> 相关方法: [[CellFlux]] | [[SCALE]] | [[CFM-GP]] | [[GEARS]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
 
 # scDFM
 

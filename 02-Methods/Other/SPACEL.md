@@ -1,5 +1,5 @@
 ---
-tags: [method, spatial-transcriptomics, deep-learning, cnn, 2023]
+tags: [method, spatial-transcriptomics, deep-learning, cnn, 2023, [[Spatial-Transcriptomics]], [[Deep-Learning]]]
 year: 2023
 institution: "Zhejiang University, Westlake University"
 authors: "Jianyang Zeng, et al."
@@ -9,6 +9,11 @@ code: "https://github.com/ggl1991/SPACEL"
 status: "已收录"
 date: "2026-03-29"
 ---
+
+> 相关概念: [[Spatial-Transcriptomics]] | [[Deep-Learning]] | [[Cell-Deconvolution]] | [[3D-Reconstruction]]
+> 相关方法: [[Spateo]] | [[TopoVelo]] | [[scGPT-spatial]] | [[PASTE]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
 
 # SPACEL
 

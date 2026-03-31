@@ -1,5 +1,5 @@
 ---
-tags: [method, diffusion-model, single-cell, perturbation, drug-response]
+tags: [method, diffusion-model, single-cell, perturbation, drug-response, [[Perturbation-Prediction]], [[Generative-Model]]]
 year: 2025
 institution: "Zhejiang University"
 authors: "Zhaokang Liang, Shuyang Zhuang, Xiaoran Jiao, Weian Mao, Hao Chen, Chunhua Shen"
@@ -9,6 +9,11 @@ code: ""
 status: "已收录"
 date: "2026-03-29"
 ---
+
+> 相关概念: [[Perturbation-Prediction]] | [[Diffusion-Model]] | [[Drug-Response]]
+> 相关方法: [[scGen]] | [[CPA]] | [[X-Cell]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
 
 # scPPDM
 

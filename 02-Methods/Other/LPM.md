@@ -1,9 +1,20 @@
 ---
+tags: [method, llm, language-model, perturbation-prediction, [[LLM]], [[Perturbation-Prediction]], [[Foundation-Model]]]
 title: "LPM"
 authors: "待确认"
 year: 2025
 institution: "待确认"
+architecture: "Large Language Model"
+paper: "待查找"
+code: "待查找"
+status: "待验证"
+date: "2026-03-29"
 ---
+
+> 相关概念: [[LLM]] | [[Perturbation-Prediction]] | [[Foundation-Model]]
+> 相关方法: [[GenePT]] | [[scGPT]] | [[scMulan]]
+> 团队: [[团队地图]]
+> 资源: [[code-implementations]] | [[dataset-resources]]
 
 # LPM (Language Perturbation Model)
 
